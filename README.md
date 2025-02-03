@@ -2,8 +2,8 @@
 ## Team: Lock Inn
 ## Theme: Innovate
 ## Members:
-Davis, Parker
-Debblay, Joshua
-Diouf, Elhadg
-Hise, Cameron
-Shoemaker, Ollie
+* Davis, Parker
+* Debblay, Joshua
+* Diouf, Elhadg
+* Hise, Cameron
+* Shoemaker, Ollie
