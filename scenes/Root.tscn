@@ -1,3 +1,7 @@
-[gd_scene format=3 uid="uid://d0wvabmrsgqeu"]
+[gd_scene load_steps=2 format=3 uid="uid://d0wvabmrsgqeu"]
+
+[ext_resource type="PackedScene" uid="uid://cmqqsnt4w4kmk" path="res://scenes/controllers/tactical_manager.tscn" id="1_uqp35"]
 
 [node name="Root" type="Node2D"]
+
+[node name="TacticalManager" parent="." instance=ExtResource("1_uqp35")]

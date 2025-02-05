@@ -1,3 +1,5 @@
+extends Node2D
+
 class_name MapTile
 
 var x: int
@@ -15,5 +17,10 @@ func setOccupent(new_occupent):
 func getOccupentType():
 	return occupent.getType()
 
+
+#####[ STUFF ]####################
 func getType() -> String:
 	return occupent.getType()
+
+func toString() -> String:
+	return "(%s, %s)" % [str(x), str(y)]
