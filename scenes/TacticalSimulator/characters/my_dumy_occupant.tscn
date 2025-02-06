@@ -1,7 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://bworrelfm1m86"]
+[gd_scene load_steps=3 format=3 uid="uid://bworrelfm1m86"]
 
-[ext_resource type="Texture2D" uid="uid://ds3rjpe4slid" path="res://assets/miku.png" id="1_8tkw3"]
+[ext_resource type="Texture2D" uid="uid://bhtg5ajp826lc" path="res://assets/dummy.png" id="1_jjppo"]
+[ext_resource type="Script" path="res://scenes/TacticalSimulator/characters/my_dumy_occupant.gd" id="2_mk3x3"]
 
 [node name="MyDumyOccupant" type="Sprite2D"]
-scale = Vector2(0.055, 0.055)
-texture = ExtResource("1_8tkw3")
+position = Vector2(32, 32)
+texture = ExtResource("1_jjppo")
+script = ExtResource("2_mk3x3")
