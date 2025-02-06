@@ -25,8 +25,11 @@ static func create(new_x: int, new_y: int) -> MapTile:
 ##### [ OCCUPANT MANAGEMENT ] ######################
 func setOccupent(new_occupant):
 	occupant = new_occupant
+	add_child(occupant)
+	
 
 func removeOccupant():
+	remove_child(occupant)
 	occupant = null
 
 func getOccupentType():

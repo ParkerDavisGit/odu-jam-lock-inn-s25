@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bworrelfm1m86"]
+
+[ext_resource type="Texture2D" uid="uid://ds3rjpe4slid" path="res://assets/miku.png" id="1_8tkw3"]
+
+[node name="MyDumyOccupant" type="Sprite2D"]
+scale = Vector2(0.055, 0.055)
+texture = ExtResource("1_8tkw3")

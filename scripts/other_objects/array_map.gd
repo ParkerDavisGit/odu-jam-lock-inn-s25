@@ -3,6 +3,7 @@ extends Node2D
 class_name ArrayMap
 
 const array_map = preload("res://scenes/TacticalSimulator/array_map.tscn")
+const MAPTILE = preload("res://scenes/TacticalSimulator/tile.tscn")
 
 var the_map
 var width: int
@@ -14,6 +15,10 @@ static func create(new_width: int, new_height: int):
 	new_map.height = new_height
 	
 	new_map.resetMap()
+	
+	var dummy = load("res://scenes/TacticalSimulator/characters/my_dumy_occupant.tscn").instantiate()
+	var tile = MAPTILE.MapTile(new_map.get_child(5))
+	
 	#consolePrint()
 	
 	return new_map
