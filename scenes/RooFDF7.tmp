@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0wvabmrsgqeu"]
+
+[ext_resource type="Script" path="res://scripts/root.gd" id="1_upugp"]
+[ext_resource type="PackedScene" uid="uid://cmqqsnt4w4kmk" path="res://scenes/controllers/tactical_manager.tscn" id="1_uqp35"]
+
+[node name="Root" type="Node2D"]
+script = ExtResource("1_upugp")
+
+[node name="TacticalManager" parent="." instance=ExtResource("1_uqp35")]

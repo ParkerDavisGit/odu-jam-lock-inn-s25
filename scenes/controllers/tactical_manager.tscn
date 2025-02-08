@@ -1,6 +1,74 @@
-[gd_scene load_steps=2 format=3 uid="uid://cmqqsnt4w4kmk"]
+[gd_scene load_steps=6 format=3 uid="uid://cmqqsnt4w4kmk"]
 
 [ext_resource type="Script" path="res://scripts/controllers/tactical_manager.gd" id="1_co23w"]
+[ext_resource type="Texture2D" uid="uid://cxruu6pf58vrb" path="res://assets/sign.png" id="2_1wa4f"]
+[ext_resource type="Script" path="res://scripts/controllers/tactical_ui_controller.gd" id="2_gqwrw"]
+[ext_resource type="Script" path="res://scripts/controllers/hover_information.gd" id="3_fkhkl"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_16xtx"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
 
 [node name="TacticalManager" type="Node2D"]
 script = ExtResource("1_co23w")
+
+[node name="TacticalUiController" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_gqwrw")
+
+[node name="HoverInformation" type="Control" parent="TacticalUiController"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_fkhkl")
+
+[node name="TextureRect" type="TextureRect" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1017.0
+offset_top = 112.0
+offset_right = 1440.0
+offset_bottom = 356.0
+texture = ExtResource("2_1wa4f")
+
+[node name="HP" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1039.0
+offset_top = 128.0
+offset_right = 1095.0
+offset_bottom = 151.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="MP" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1030.0
+offset_top = 183.0
+offset_right = 1114.0
+offset_bottom = 217.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="ATK" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1030.0
+offset_top = 230.0
+offset_right = 1114.0
+offset_bottom = 264.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="DEF" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1033.0
+offset_top = 268.0
+offset_right = 1117.0
+offset_bottom = 302.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="SPD" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1039.0
+offset_top = 300.0
+offset_right = 1123.0
+offset_bottom = 334.0
+label_settings = SubResource("LabelSettings_16xtx")

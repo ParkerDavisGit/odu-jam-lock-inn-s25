@@ -9,27 +9,64 @@ var the_map
 var width: int
 var height: int
 
-static func create(new_width: int, new_height: int):
+static func create(new_width: int, new_height: int, level_name: String):
 	var new_map = array_map.instantiate()
+	var map_data = readMapData(level_name)
+	var char_data = readCharData(level_name)
+	
 	new_map.width = new_width
 	new_map.height = new_height
 	
-	new_map.resetMap()
-	
-	var dummy = load("res://scenes/TacticalSimulator/characters/my_dumy_occupant.tscn")
-	
-	new_map.get_child(1).setOccupant(dummy.instantiate())
-	new_map.get_child(55).setOccupant(dummy.instantiate())
-	new_map.get_child(19).setOccupant(dummy.instantiate())
-	new_map.get_child(87).setOccupant(dummy.instantiate())
+	new_map.resetMap(new_width, map_data)
+	populateMap(new_map, char_data)
 	
 	return new_map
 
-func resetMap():
+static func readCharData(level_name):
+	var data = FileAccess.open("res://data/level_data/%s.txt" % (level_name+"_char"), FileAccess.READ)
+	data = data.get_as_text()
+	data = data.split("\n")
+	data = data.slice(0, data.size()-1)
+	return data
+
+static func populateMap(map, data):
+	var dummy = load("res://scenes/TacticalSimulator/characters/my_dumy_occupant.tscn")
+	
+	var line = ""
+	var idx = 0
+	for raw_line in data:
+		line = raw_line.split(" ")
+		idx = map.width*int(line[2]) + int(line[1])
+		match line[0]:
+			"ch1":
+				map.get_child(idx).setOccupant(dummy.instantiate())
+			"ch2":
+				map.get_child(idx).setOccupant(dummy.instantiate())
+			"ch3":
+				map.get_child(idx).setOccupant(dummy.instantiate())
+
+
+static func readMapData(level_name):
+	var data = FileAccess.open("res://data/level_data/%s.txt" % level_name, FileAccess.READ)
+	data = data.get_as_text()
+	data = data.split("\n")
+	
+	var s = ""
+	for str in data:
+		s = s + str
+	
+	data = s
+	data = data.split(",")
+	data = data.slice(0, data.size()-1)
+	
+	return data
+
+func resetMap(width, data):
 	the_map = Array()
 	for y in range(self.height):
 		for x in range(self.width):
-			var temp_tile = MapTile.create(x, y)
+			var temp_tile = MapTile.create(x, y, data[width*y+x])
+			temp_tile.name = "(%s, %s)" % [str(x), str(y)]
 			add_child(temp_tile)
 			the_map.append(temp_tile)
 
@@ -82,6 +119,9 @@ func tilemapToHeatmap(x: int, y: int, distance: int):
 	for idy in range(height):
 		for idx in range(width):
 			if the_map[width*idy+idx].occupied():
+				heat_map[width*idy+idx] = -1
+				continue
+			if the_map[width*idy+idx].unmoveable:
 				heat_map[width*idy+idx] = -1
 
 	
