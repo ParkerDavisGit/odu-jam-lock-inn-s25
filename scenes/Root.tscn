@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://d0wvabmrsgqeu"]
+[gd_scene load_steps=5 format=3 uid="uid://d0wvabmrsgqeu"]
 
 [ext_resource type="Script" path="res://scripts/root.gd" id="1_upugp"]
-[ext_resource type="PackedScene" uid="uid://cmqqsnt4w4kmk" path="res://scenes/controllers/tactical_manager.tscn" id="1_uqp35"]
+[ext_resource type="PackedScene" uid="uid://bxwlc8a2n7n4b" path="res://scenes/controllers/ui_controller.tscn" id="3_ipm76"]
+[ext_resource type="PackedScene" uid="uid://b08rs1kksf2m4" path="res://scenes/controllers/game_controller.tscn" id="4_ek5to"]
+[ext_resource type="Script" path="res://scripts/controllers/ui_controller.gd" id="4_i82pl"]
 
 [node name="Root" type="Node2D"]
 script = ExtResource("1_upugp")
 
-[node name="TacticalManager" parent="." instance=ExtResource("1_uqp35")]
+[node name="GameController" parent="." instance=ExtResource("4_ek5to")]
+
+[node name="UiController" parent="." instance=ExtResource("3_ipm76")]
+script = ExtResource("4_i82pl")

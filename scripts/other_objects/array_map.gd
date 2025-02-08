@@ -102,7 +102,7 @@ func highlightOccupantMovement(tile):
 			s = s + " " + c
 			if c.length() < 2:
 				s = s + " "
-		print(s)
+		#print(s)
 	
 	for idy in range(height):
 		for idx in range(width):
@@ -127,7 +127,7 @@ func tilemapToHeatmap(x: int, y: int, distance: int):
 	
 	heat_map[width*y+x] = distance + 1
 	
-	print("Clicked on: ", x,", ", y)
+	#print("Clicked on: ", x,", ", y)
 	
 	var current_distance = distance + 1
 	while current_distance > 1:
@@ -152,10 +152,6 @@ func heatMapUpdate(heat_map, idx, idy, d):
 	if idy < height-1:
 		to_test_y.append(1)
 	
-	print(to_test_x)
-	print(to_test_y)
-	
-	print(idx,", ", idy)
 	
 	for v in to_test_x:
 		if heat_map[width*idy+(idx+v)] == 0:

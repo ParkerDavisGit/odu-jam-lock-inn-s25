@@ -1,0 +1,136 @@
+[gd_scene load_steps=3 format=3 uid="uid://t87u8o8a3tnm"]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_5g70q"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_yuycc"]
+font_size = 48
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5g70q")
+
+[node name="Base" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ToLevelSelect" type="Button" parent="Base"]
+layout_mode = 0
+offset_left = 543.0
+offset_top = 97.0
+offset_right = 1090.0
+offset_bottom = 471.0
+
+[node name="Label" type="Label" parent="Base/ToLevelSelect"]
+layout_mode = 0
+offset_left = 116.0
+offset_top = 141.0
+offset_right = 438.0
+offset_bottom = 209.0
+text = "LEVEL SELECT"
+label_settings = SubResource("LabelSettings_yuycc")
+
+[node name="QUITGAME" type="Button" parent="Base"]
+layout_mode = 0
+offset_left = 634.0
+offset_top = 634.0
+offset_right = 976.0
+offset_bottom = 752.0
+
+[node name="Label" type="Label" parent="Base/QUITGAME"]
+offset_left = 93.0
+offset_top = 25.0
+offset_right = 257.0
+offset_bottom = 93.0
+text = "QUIT"
+label_settings = SubResource("LabelSettings_yuycc")
+
+[node name="LevelSelect" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="1" type="Button" parent="LevelSelect"]
+layout_mode = 0
+offset_left = 373.0
+offset_top = 198.0
+offset_right = 493.0
+offset_bottom = 318.0
+
+[node name="Label" type="Label" parent="LevelSelect/1"]
+offset_left = 37.0
+offset_top = 22.0
+offset_right = 79.0
+offset_bottom = 90.0
+text = "1"
+label_settings = SubResource("LabelSettings_yuycc")
+
+[node name="2" type="Button" parent="LevelSelect"]
+offset_left = 698.0
+offset_top = 201.0
+offset_right = 818.0
+offset_bottom = 321.0
+
+[node name="Label" type="Label" parent="LevelSelect/2"]
+offset_left = 37.0
+offset_top = 22.0
+offset_right = 79.0
+offset_bottom = 90.0
+text = "2"
+label_settings = SubResource("LabelSettings_yuycc")
+
+[node name="3" type="Button" parent="LevelSelect"]
+offset_left = 958.0
+offset_top = 204.0
+offset_right = 1078.0
+offset_bottom = 324.0
+
+[node name="Label" type="Label" parent="LevelSelect/3"]
+offset_left = 37.0
+offset_top = 22.0
+offset_right = 79.0
+offset_bottom = 90.0
+text = "3"
+label_settings = SubResource("LabelSettings_yuycc")
+
+[node name="default" type="Button" parent="LevelSelect"]
+offset_left = 718.0
+offset_top = 554.0
+offset_right = 838.0
+offset_bottom = 674.0
+
+[node name="Label" type="Label" parent="LevelSelect/default"]
+offset_left = 37.0
+offset_top = 22.0
+offset_right = 79.0
+offset_bottom = 90.0
+text = "D"
+label_settings = SubResource("LabelSettings_yuycc")
+
+[node name="back" type="Button" parent="LevelSelect"]
+offset_left = 42.0
+offset_top = 730.0
+offset_right = 504.0
+offset_bottom = 850.0
+
+[node name="Label" type="Label" parent="LevelSelect/back"]
+offset_left = 37.0
+offset_top = 22.0
+offset_right = 79.0
+offset_bottom = 90.0
+text = "Back to Menu"
+label_settings = SubResource("LabelSettings_yuycc")
+
+[connection signal="pressed" from="Base/ToLevelSelect" to="." method="_on_to_level_select_pressed"]
+[connection signal="pressed" from="Base/QUITGAME" to="." method="_on_quitgame_pressed"]
+[connection signal="pressed" from="LevelSelect/1" to="." method="_on_one_pressed"]
+[connection signal="pressed" from="LevelSelect/2" to="." method="_on_two_pressed"]
+[connection signal="pressed" from="LevelSelect/3" to="." method="_on_three_pressed"]
+[connection signal="pressed" from="LevelSelect/default" to="." method="_on_default_pressed"]
+[connection signal="pressed" from="LevelSelect/back" to="." method="_on_level_back_pressed"]

@@ -7,13 +7,12 @@ var the_map
 
 var selected
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
+## INIT YAY
+func create(level_name):
 	SignalBus.on_tile_clicked.connect(_on_tile_clicked)
 	SignalBus.on_tile_hover.connect(_on_tile_hover)
 	
-	the_map = ArrayMap.create(10, 10, "3")
+	the_map = ArrayMap.create(10, 10, level_name)
 	add_child(the_map)
 	
 	uiController = get_child(0)
@@ -37,6 +36,14 @@ func _on_tile_clicked(tile):
 		return
 	
 	if tile.occupied():
+		if tile.occupant == selected.occupant:
+			pass
+			## THIS IS WHERE DESELECTING HAPPENS
+			### NOTICE ME
+			#### ALERT
+			##### ALERT
+			###### ALERT
+			####### KEYWORD HERE
 		return
 	
 	if not tile.highlight.visible:
@@ -48,6 +55,7 @@ func _on_tile_clicked(tile):
 	tile.highlight.visible = true
 	the_map.clearHighlights()
 	selected = null
+
 
 func _on_tile_hover(tile):
 	if tile.occupied():

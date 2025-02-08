@@ -16,6 +16,7 @@ func _ready():
 
 func hoverInformation():
 	var info = {}
+	
 	info["max_hp"] = str(max_hp)
 	info["cur_hp"] = str(cur_hp)
 	info["max_mp"] = str(max_mp)

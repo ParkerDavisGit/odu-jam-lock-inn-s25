@@ -22,8 +22,6 @@ func loadInfo(occupant):
 	label_atk.text = "Attack: " + info["attack"]
 	label_def.text = "Defense: " + info["defense"]
 	label_spd.text = "Speed: " + info["speed"]
-	
-	print("!")
 
 func clear():
 	label_hp.text = ""

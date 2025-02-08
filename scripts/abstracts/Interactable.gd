@@ -16,4 +16,4 @@ func _process(delta: float) -> void:
 
 func interact() -> void:
 	@warning_ignore("assert_always_true")
-	assert(true, "YOU FORGOT TO OVERWRITE INTERACT() IN %s YOU IDIOT" % type)
+	assert(false, "YOU FORGOT TO OVERWRITE INTERACT() IN %s YOU IDIOT" % type)
