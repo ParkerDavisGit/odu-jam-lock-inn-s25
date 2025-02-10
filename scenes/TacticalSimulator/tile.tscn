@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://d3wyvfukblp2f"]
+[gd_scene load_steps=6 format=3 uid="uid://d3wyvfukblp2f"]
 
 [ext_resource type="Texture2D" uid="uid://bf5rpbxon44jf" path="res://assets/grass.png" id="1_c4dt4"]
 [ext_resource type="Script" path="res://scripts/other_objects/map_tile.gd" id="1_dcx3k"]
 [ext_resource type="Script" path="res://scripts/other_objects/tile_button.gd" id="2_m4xs8"]
 [ext_resource type="Texture2D" uid="uid://blhlqa1o0vvbb" path="res://assets/highlight.png" id="4_ejmx3"]
+[ext_resource type="Texture2D" uid="uid://6rg8taiimuei" path="res://assets/attack_highlight.png" id="5_s4glk"]
 
 [node name="Tile" type="Node2D"]
 script = ExtResource("1_dcx3k")
@@ -15,11 +16,17 @@ offset_bottom = 40.0
 texture_normal = ExtResource("1_c4dt4")
 script = ExtResource("2_m4xs8")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Highlight" type="TextureRect" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
 texture = ExtResource("4_ejmx3")
+
+[node name="AttackHighlight" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource("5_s4glk")
 
 [connection signal="mouse_entered" from="TileButton" to="." method="_on_tile_button_mouse_entered"]
 [connection signal="mouse_exited" from="TileButton" to="." method="_on_tile_button_mouse_exited"]

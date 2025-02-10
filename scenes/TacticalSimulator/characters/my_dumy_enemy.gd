@@ -21,6 +21,7 @@ func unspend():
 	spent = false
 	self.modulate.a = 1
 
+
 func hoverInformation():
 	var info = {}
 	
@@ -35,4 +36,4 @@ func hoverInformation():
 	return info
 
 func getType():
-	return "player"
+	return "enemy"

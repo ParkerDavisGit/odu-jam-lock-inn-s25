@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://40nygmk6y77u"]
+
+[ext_resource type="Texture2D" uid="uid://bg5nvkfkv7oap" path="res://assets/enemy.png" id="1_qw1x2"]
+[ext_resource type="Script" path="res://scenes/TacticalSimulator/characters/my_dumy_enemy.gd" id="2_hoy8i"]
+
+[node name="MyDumyOccupant" type="Sprite2D"]
+position = Vector2(32, 32)
+texture = ExtResource("1_qw1x2")
+script = ExtResource("2_hoy8i")

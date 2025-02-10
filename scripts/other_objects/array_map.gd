@@ -31,6 +31,7 @@ static func readCharData(level_name):
 
 static func populateMap(map, data):
 	var dummy = load("res://scenes/TacticalSimulator/characters/my_dumy_occupant.tscn")
+	var dummy_enemy = load("res://scenes/TacticalSimulator/characters/my_dummy_enemy.tscn")
 	
 	var line = ""
 	var idx = 0
@@ -44,6 +45,8 @@ static func populateMap(map, data):
 				map.get_child(idx).setOccupant(dummy.instantiate())
 			"ch3":
 				map.get_child(idx).setOccupant(dummy.instantiate())
+			"en1":
+				map.get_child(idx).setOccupant(dummy_enemy.instantiate())
 
 
 static func readMapData(level_name):
@@ -73,6 +76,7 @@ func resetMap(width, data):
 func clearHighlights():
 	for tile in the_map:
 		tile.highlight.visible = false
+		tile.attack_highlight.visible = false
 		tile.lock_highlight = false
 
 ###
@@ -159,6 +163,46 @@ func heatMapUpdate(heat_map, idx, idy, d):
 	for v in to_test_y:
 		if heat_map[width*(idy+v)+idx] == 0:
 			heat_map[width*(idy+v)+idx] = d
+
+
+func highlightAttackTiles(selected):
+	var idx = width * selected.y + selected.x
+	var given_x = selected.x
+	var given_y = selected.y
+	
+	var idx_up = idx - width
+	var idx_left = idx - 1
+	var idx_right = idx + 1
+	var idx_down = idx + width
+	
+	### This is some of the worst code I have written in a while ;-;
+	if given_x < width - 1:
+		if the_map[idx_right].occupied():
+			if the_map[idx_right].occupant.getType() == "enemy":
+				the_map[idx_right].addAttackHighlight()
+	if given_x > 0:
+		if the_map[idx_left].occupied():
+			if the_map[idx_left].occupant.getType() == "enemy":
+				the_map[idx_left].addAttackHighlight()
+	if given_y < height - 1:
+		if the_map[idx_down].occupied():
+			if the_map[idx_down].occupant.getType() == "enemy":
+				the_map[idx_down].addAttackHighlight()
+	if given_y > 0:
+		if the_map[idx_up].occupied():
+			if the_map[idx_up].occupant.getType() == "enemy":
+				the_map[idx_up].addAttackHighlight()
+
+func refreshPlayerCharacters():
+	for tile in the_map:
+		if not tile.occupied():
+			continue
+		if tile.occupant.getType() == "player":
+			tile.occupant.unspend()
+
+### ALERT
+### TODO
+### Func for getting idx's for surrounding tiles
 
 # Personal Checklist
 func getType() -> String:

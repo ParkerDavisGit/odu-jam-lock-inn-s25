@@ -9,8 +9,10 @@ var y: int
 
 var occupant
 var is_occupied
+
 var texture
 var highlight
+var attack_highlight
 
 var lock_highlight
 var unmoveable
@@ -25,9 +27,12 @@ static func create(new_x: int, new_y: int, type: String) -> MapTile:
 	new_tile.position = Vector2(new_x*(tile_width+1)+250, new_y*(tile_width+1)+100)
 	
 	new_tile.texture = new_tile.get_child(0)
-	
 	new_tile.highlight = new_tile.get_child(1)
+	new_tile.attack_highlight = new_tile.get_child(2)
+	
 	new_tile.highlight.visible = false
+	new_tile.attack_highlight.visible = false
+	
 	new_tile.lock_highlight = false
 
 	new_tile.is_occupied = false
@@ -74,6 +79,13 @@ func occupied() -> bool:
 	return is_occupied
 
 
+func addAttackHighlight():
+	attack_highlight.visible = true
+
+func removeAttackHighlight():
+	attack_highlight.visible = false
+
+
 ##### [ SIGNALS ] #####################
 func _on_tile_button_mouse_entered() -> void:
 	SignalBus.on_tile_hover.emit(self)
@@ -89,7 +101,6 @@ func _on_tile_button_mouse_exited() -> void:
 	
 	if highlight.visible:
 		highlight.visible = false
-		print("off!")
 
 func _on_tile_button_pressed() -> void:
 	if unmoveable:

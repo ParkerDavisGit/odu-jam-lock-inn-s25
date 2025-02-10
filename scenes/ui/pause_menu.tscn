@@ -1,18 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://t87u8o8a3tnm"]
+[gd_scene load_steps=3 format=3 uid="uid://cu7se18iorkex"]
 
-[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_5g70q"]
+[ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="1_amjk4"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_yuycc"]
 font_size = 48
 
-[node name="MainMenu" type="Control"]
+[node name="PauseMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_5g70q")
+script = ExtResource("1_amjk4")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = -102.0
+offset_top = -66.0
+offset_right = 1769.0
+offset_bottom = 990.0
+color = Color(0, 0, 0, 0.356863)
 
 [node name="Base" type="Control" parent="."]
 anchors_preset = 0
@@ -137,7 +145,7 @@ offset_bottom = 90.0
 text = "Back to Menu"
 label_settings = SubResource("LabelSettings_yuycc")
 
-[connection signal="pressed" from="Base/ToLevelSelect" to="." method="_on_to_level_select_pressed"]
+[connection signal="pressed" from="Base/ToLevelSelect" to="." method="_on_pause_level_select_pressed"]
 [connection signal="pressed" from="Base/QUITGAME" to="." method="_on_quitgame_pressed"]
 [connection signal="pressed" from="LevelSelect/1" to="." method="_on_one_pressed"]
 [connection signal="pressed" from="LevelSelect/2" to="." method="_on_two_pressed"]

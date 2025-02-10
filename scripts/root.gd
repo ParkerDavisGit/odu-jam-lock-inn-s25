@@ -1,5 +1,6 @@
 extends Node2D
 
+var paused = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -8,10 +9,16 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("QUIT"):
+	if Input.is_action_just_pressed("PAUSE"):
 		if get_child(0).level == null:
 			_on_quit()
-		SignalBus.on_back_to_main_menu.emit()
+		if paused:
+			paused = false
+			SignalBus.on_unpause.emit()
+			return
+		
+		paused = true
+		SignalBus.on_pause.emit()
 
 
 func _on_quit():

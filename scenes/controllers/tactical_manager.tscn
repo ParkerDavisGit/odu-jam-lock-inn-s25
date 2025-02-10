@@ -72,3 +72,42 @@ offset_top = 300.0
 offset_right = 1123.0
 offset_bottom = 334.0
 label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="AbilitySelector" type="Control" parent="TacticalUiController"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="TacticalUiController/AbilitySelector"]
+offset_left = 1017.0
+offset_top = 450.0
+offset_right = 1440.0
+offset_bottom = 694.0
+texture = ExtResource("2_1wa4f")
+
+[node name="AbilityOne" type="Button" parent="TacticalUiController/AbilitySelector"]
+layout_mode = 0
+offset_left = 1043.0
+offset_top = 467.0
+offset_right = 1394.0
+offset_bottom = 522.0
+text = "Attack!"
+
+[node name="AbilityOne2" type="Button" parent="TacticalUiController/AbilitySelector"]
+offset_left = 1057.0
+offset_top = 538.0
+offset_right = 1425.0
+offset_bottom = 594.0
+text = "Refresh Spent Units"
+
+[node name="AbilityOne3" type="Button" parent="TacticalUiController/AbilitySelector"]
+offset_left = 1050.0
+offset_top = 623.0
+offset_right = 1394.0
+offset_bottom = 683.0
+text = "Battle Mode"
+
+[connection signal="pressed" from="TacticalUiController/AbilitySelector/AbilityOne" to="." method="_on_ability_one_pressed"]
+[connection signal="pressed" from="TacticalUiController/AbilitySelector/AbilityOne2" to="." method="_on_ability_one_2_pressed"]
+[connection signal="pressed" from="TacticalUiController/AbilitySelector/AbilityOne3" to="." method="_on_ability_one_3_pressed"]
