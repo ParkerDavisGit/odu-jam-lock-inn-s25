@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8jepgmwcchjd"]
+
+[ext_resource type="Script" path="res://scenes/TacticalSimulator/characters/corpse.gd" id="1_axva7"]
+[ext_resource type="Texture2D" uid="uid://dw5dbs8lsrigw" path="res://assets/enemies/def/dead.png" id="1_pcd5s"]
+
+[node name="Corpse" type="Sprite2D"]
+position = Vector2(32, 32)
+scale = Vector2(0.286, 0.286)
+texture = ExtResource("1_pcd5s")
+script = ExtResource("1_axva7")

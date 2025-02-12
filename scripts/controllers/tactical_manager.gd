@@ -12,6 +12,8 @@ var selected
 var charactersSpent
 var charactersAlive
 
+var packaged_corpse
+
 ## INIT YAY
 func create(level_name):
 	SignalBus.on_tile_clicked.connect(_on_tile_clicked)
@@ -27,6 +29,10 @@ func create(level_name):
 	
 	charactersSpent = 0
 	charactersAlive = 3
+	
+	SignalBus.on_track_play.emit(level_name)
+	
+	packaged_corpse = load("res://scenes/TacticalSimulator/characters/corpse.tscn")
 
 func drawTheTestZone() -> void:
 	for row in the_map:
@@ -51,7 +57,13 @@ func kill(tile: MapTile):
 	if tile.occupant.getType() == "player":
 		charactersAlive -= 1
 	
+	var add_corpse = tile.occupant.getType() == "enemy"
+	
 	tile.removeOccupant()
+	
+	if add_corpse:
+		tile.setOccupant(packaged_corpse.instantiate())
+	
 	pass
 
 

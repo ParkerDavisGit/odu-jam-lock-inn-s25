@@ -15,3 +15,5 @@ signal on_unpause()
 
 signal on_back_to_main_menu()
 signal on_quit()
+
+signal on_track_play(track_name)

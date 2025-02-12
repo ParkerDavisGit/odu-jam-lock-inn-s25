@@ -80,6 +80,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="TacticalUiController/AbilitySelector"]
+layout_mode = 0
 offset_left = 1017.0
 offset_top = 450.0
 offset_right = 1440.0
@@ -95,6 +96,7 @@ offset_bottom = 522.0
 text = "Attack!"
 
 [node name="AbilityOne2" type="Button" parent="TacticalUiController/AbilitySelector"]
+layout_mode = 0
 offset_left = 1057.0
 offset_top = 538.0
 offset_right = 1425.0
@@ -102,6 +104,7 @@ offset_bottom = 594.0
 text = "Refresh Spent Units"
 
 [node name="AbilityOne3" type="Button" parent="TacticalUiController/AbilitySelector"]
+layout_mode = 0
 offset_left = 1050.0
 offset_top = 623.0
 offset_right = 1394.0

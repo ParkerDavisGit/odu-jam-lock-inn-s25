@@ -15,6 +15,9 @@ func _ready() -> void:
 	label_spd = get_child(5)
 
 func loadInfo(occupant):
+	if occupant.getType() == "corpse":
+		return
+	
 	var info = occupant.hoverInformation()
 	
 	label_hp.text = "HP: " + info["cur_hp"] + "/" + info["max_hp"]
