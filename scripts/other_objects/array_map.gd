@@ -9,6 +9,9 @@ var the_map
 var width: int
 var height: int
 
+var players
+var enemies
+
 static func create(new_width: int, new_height: int, level_name: String):
 	var new_map = array_map.instantiate()
 	var map_data = readMapData(level_name)
@@ -17,7 +20,10 @@ static func create(new_width: int, new_height: int, level_name: String):
 	new_map.width = new_width
 	new_map.height = new_height
 	
-	new_map.resetMap(new_width, map_data)
+	new_map.players = []
+	new_map.enemies = []
+	
+	new_map.resetMap(map_data)
 	populateMap(new_map, char_data)
 	
 	return new_map
@@ -40,13 +46,22 @@ static func populateMap(map, data):
 		idx = map.width*int(line[2]) + int(line[1])
 		match line[0]:
 			"ch1":
-				map.get_child(idx).setOccupant(dummy.instantiate())
+				var temp = dummy.instantiate()
+				map.get_child(idx).setOccupant(temp)
+				map.players.append(temp)
 			"ch2":
-				map.get_child(idx).setOccupant(dummy.instantiate())
+				var temp = dummy.instantiate()
+				map.get_child(idx).setOccupant(temp)
+				map.players.append(temp)
 			"ch3":
-				map.get_child(idx).setOccupant(dummy.instantiate())
+				var temp = dummy.instantiate()
+				map.get_child(idx).setOccupant(temp)
+				map.players.append(temp)
 			"en1":
-				map.get_child(idx).setOccupant(dummy_enemy.instantiate())
+				var temp = dummy_enemy.instantiate()
+				map.get_child(idx).setOccupant(temp)
+				map.enemies.append(temp)
+
 
 
 static func readMapData(level_name):
@@ -55,8 +70,8 @@ static func readMapData(level_name):
 	data = data.split("\n")
 	
 	var s = ""
-	for str in data:
-		s = s + str
+	for st in data:
+		s = s + st
 	
 	data = s
 	data = data.split(",")
@@ -64,7 +79,7 @@ static func readMapData(level_name):
 	
 	return data
 
-func resetMap(width, data):
+func resetMap(data):
 	the_map = Array()
 	for y in range(self.height):
 		for x in range(self.width):
@@ -199,6 +214,134 @@ func refreshPlayerCharacters():
 			continue
 		if tile.occupant.getType() == "player":
 			tile.occupant.unspend()
+
+
+func enemyHeatmap(start_x, start_y):
+	var heat_map = Array()
+	for idy in range(height):
+		for idx in range(width):
+			heat_map.append(0)
+	
+	for idy in range(height):
+		for idx in range(width):
+			if the_map[width*idy+idx].occupied():
+				heat_map[width*idy+idx] = -2
+				continue
+			if the_map[width*idy+idx].unmoveable:
+				heat_map[width*idy+idx] = -1
+
+	var val = 0
+	heat_map[width*start_y+start_x] = val + 1
+	
+	var current_value = val + 1
+	while current_value < 20:
+		for idy in range(height):
+			for idx in range(width):
+				if heat_map[width*idy+idx] == current_value:
+					enemyHeatMapUpdate(heat_map, idx, idy, current_value+1)
+		current_value += 1
+	
+	return heat_map
+
+
+func enemyHeatMapUpdate(heat_map, idx, idy, d):
+	var to_test_x = []
+	var to_test_y = []
+	if idx > 0:
+		to_test_x.append(-1)
+	if idx < width-1:
+		to_test_x.append(1)
+	if idy > 0:
+		to_test_y.append(-1)
+	if idy < height-1:
+		to_test_y.append(1)
+	
+	
+	for v in to_test_x:
+		if heat_map[width*idy+(idx+v)] == 0:
+			heat_map[width*idy+(idx+v)] = d
+		elif heat_map[width*idy+(idx+v)] == -2:
+			heat_map[width*idy+(idx+v)] = -d
+	for v in to_test_y:
+		if heat_map[width*(idy+v)+idx] == 0:
+			heat_map[width*(idy+v)+idx] = d
+		elif heat_map[width*(idy+v)+idx] == -2:
+			heat_map[width*(idy+v)+idx] = -d
+
+func playEnemyTurns(phase):
+	for enemy in enemies:
+		await get_tree().create_timer(1).timeout
+		
+		if phase == "attack":
+			continue
+		var heat_map = enemyHeatmap(enemy.x, enemy.y)
+		## Get list of player's heatmap values
+		var target_values = []
+		var target_coords = []
+		for player in players:
+			target_values.append(heat_map[width*player.y+player.x])
+			target_coords.append(player.x)
+			target_coords.append(player.y)
+		
+		## Decide who to move towards
+		var closest = target_values[0]
+		var closest_idx = 0
+		var current_idx = 0
+		for i in target_values:
+			if i > closest:
+				closest = i
+				closest_idx = current_idx
+			current_idx += 1
+		
+		## Move
+		var idx_to_test = 0
+		var test_x = target_coords[2*closest_idx]
+		var test_y = target_coords[2*closest_idx+1]
+		
+		var to_test_x = []
+		var to_test_y = []
+		if test_x > 0:
+			to_test_x.append(-1)
+		if test_x < width-1:
+			to_test_x.append(1)
+		if test_y > 0:
+			to_test_y.append(-1)
+		if test_y < height-1:
+			to_test_y.append(1)
+		
+		var minimum_space = [100, 0, 0]
+		
+		for v in to_test_x:
+			if heat_map[width*test_y+(test_x+v)] <= 0:
+				continue
+			if heat_map[width*test_y+(test_x+v)] < minimum_space[0]:
+				minimum_space[0] = heat_map[width*test_y+(test_x+v)]
+				minimum_space[1] = test_x+v
+				minimum_space[2] = test_y
+
+		for v in to_test_y:
+			if heat_map[width*(test_y+v)+test_x] <= 0:
+				continue
+			if heat_map[width*(test_y+v)+test_x] < minimum_space[0]:
+				minimum_space[0] = heat_map[width*(test_y+v)+test_x]
+				minimum_space[1] = test_x
+				minimum_space[2] = test_y+v
+		
+		if minimum_space[0] == 100 or minimum_space[0] > enemy.move+1:
+			## No enemy in attackable range
+			continue
+		
+		for idxy in range(height):
+			var s = ""
+			for idxx in range(width):
+				var c = str(heat_map[width*idxy+idxx])
+				s = s + c + " "
+			print(s)
+		
+		print(str(enemy.x) + ", " + str(enemy.y) + " - " + str(minimum_space[1]) + ", " + str(minimum_space[2]))
+		the_map[width*enemy.y+enemy.x].removeOccupant()
+		the_map[width*minimum_space[2]+minimum_space[1]].setOccupant(enemy)
+
 
 ### ALERT
 ### TODO

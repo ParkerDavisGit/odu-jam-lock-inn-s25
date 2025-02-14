@@ -3,12 +3,18 @@ extends Sprite2D
 var max_hp = randi() % 5 + 1
 var cur_hp = max_hp
 var max_mp = randi() % 5 + 1
-var cur_mp = randi() % 5 + 1
+var cur_mp = max_mp
 var attack = randi() % 5 + 1
 var defense = randi() % 5 + 1
 var speed = randi() % 5 + 1
 
+var move = 3
+var move_left = move
+
 var spent = false
+
+var x
+var y
 
 func _ready():
 	pass
@@ -32,6 +38,9 @@ func hoverInformation():
 	info["attack"] = str(attack)
 	info["defense"] = str(defense)
 	info["speed"] = str(speed)
+	
+	info["move"] = str(move)
+	info["move_left"] = str(move_left)
 	
 	return info
 

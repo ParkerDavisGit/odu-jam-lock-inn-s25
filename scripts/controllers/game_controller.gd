@@ -15,7 +15,7 @@ func _ready() -> void:
 
 func _on_load_level(level_name):
 	if level != null:
-		remove_child(level)
+		level.queue_free()
 		level = null
 	
 	level = packaged_tactical_level.instantiate()

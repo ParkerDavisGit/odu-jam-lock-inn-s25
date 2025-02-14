@@ -6,11 +6,15 @@ var uiController
 var the_map
 
 var battle_mode
+var phase
+var control
 
 var selected
 
 var charactersSpent
 var charactersAlive
+var players
+var enemies
 
 var packaged_corpse
 
@@ -19,6 +23,7 @@ func create(level_name):
 	SignalBus.on_tile_clicked.connect(_on_tile_clicked)
 	SignalBus.on_tile_hover.connect(_on_tile_hover)
 	
+	#the_map = load("res://scenes/TacticalSimulator/array_map.tscn").instantiate()
 	the_map = ArrayMap.create(10, 10, level_name)
 	add_child(the_map)
 	
@@ -27,10 +32,14 @@ func create(level_name):
 	battle_mode = false
 	selected = null
 	
+	phase = "move"
+	control = "player"
+	
 	charactersSpent = 0
 	charactersAlive = 3
 	
 	SignalBus.on_track_play.emit(level_name)
+	SignalBus.on_turn_change.connect(_on_turn_change)
 	
 	packaged_corpse = load("res://scenes/TacticalSimulator/characters/corpse.tscn")
 
@@ -70,11 +79,8 @@ func kill(tile: MapTile):
 ##### [ YIPPEE ] ######################
 func checkTurnCycle():
 	charactersSpent += 1
-	print("!")
 	if charactersSpent >= charactersAlive:
-		the_map.refreshPlayerCharacters()
-		charactersSpent = 0
-
+		SignalBus.on_turn_change.emit("enemies")
 
 
 ##### [ SIGNALS ] #####################
@@ -111,6 +117,9 @@ func _on_tile_clicked(tile):
 	if not tile.highlight.visible:
 		return
 	
+	if selected.occupant == null:
+		return
+	
 	var temp = selected.occupant
 	selected.occupant.spend()
 	selected.removeOccupant()
@@ -121,6 +130,12 @@ func _on_tile_clicked(tile):
 	uiController.toggleAbilitySelector()
 	checkTurnCycle()
 
+func _on_turn_change(type):
+	if type == "enemies":
+		the_map.playEnemyTurns(phase)
+	if type == "players":
+		the_map.refreshPlayerCharacters()
+		charactersSpent = 0
 
 func _on_tile_hover(tile):
 	if tile.occupied():
@@ -140,3 +155,8 @@ func _on_ability_one_2_pressed() -> void:
 
 func _on_ability_one_3_pressed() -> void:
 	battle_mode = !battle_mode
+
+
+func clean_up():
+	for tile in the_map.the_map:
+		tile.queue_free()

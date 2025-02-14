@@ -35,18 +35,18 @@ texture = ExtResource("2_1wa4f")
 
 [node name="HP" type="Label" parent="TacticalUiController/HoverInformation"]
 layout_mode = 0
-offset_left = 1039.0
-offset_top = 128.0
-offset_right = 1095.0
+offset_left = 1035.0
+offset_top = 117.0
+offset_right = 1091.0
 offset_bottom = 151.0
 label_settings = SubResource("LabelSettings_16xtx")
 
 [node name="MP" type="Label" parent="TacticalUiController/HoverInformation"]
 layout_mode = 0
-offset_left = 1030.0
-offset_top = 183.0
-offset_right = 1114.0
-offset_bottom = 217.0
+offset_left = 1245.0
+offset_top = 120.0
+offset_right = 1329.0
+offset_bottom = 154.0
 label_settings = SubResource("LabelSettings_16xtx")
 
 [node name="ATK" type="Label" parent="TacticalUiController/HoverInformation"]
@@ -71,6 +71,14 @@ offset_left = 1039.0
 offset_top = 300.0
 offset_right = 1123.0
 offset_bottom = 334.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="MV" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1036.0
+offset_top = 176.0
+offset_right = 1120.0
+offset_bottom = 210.0
 label_settings = SubResource("LabelSettings_16xtx")
 
 [node name="AbilitySelector" type="Control" parent="TacticalUiController"]

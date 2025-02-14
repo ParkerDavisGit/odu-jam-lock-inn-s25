@@ -5,6 +5,7 @@ var label_mp
 var label_atk
 var label_def
 var label_spd
+var label_mv
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,6 +14,7 @@ func _ready() -> void:
 	label_atk = get_child(3)
 	label_def = get_child(4)
 	label_spd = get_child(5)
+	label_mv  = get_child(6)
 
 func loadInfo(occupant):
 	if occupant.getType() == "corpse":
@@ -25,6 +27,7 @@ func loadInfo(occupant):
 	label_atk.text = "Attack: " + info["attack"]
 	label_def.text = "Defense: " + info["defense"]
 	label_spd.text = "Speed: " + info["speed"]
+	label_mv.text = "Move: " + info["move_left"] + "/" + info["move"]
 
 func clear():
 	label_hp.text = ""
@@ -32,3 +35,4 @@ func clear():
 	label_atk.text = ""
 	label_def.text = ""
 	label_spd.text = ""
+	label_mv.text = ""

@@ -62,6 +62,8 @@ static func assignTextures(new_tile, short_type):
 func setOccupant(new_occupant):
 	occupant = new_occupant
 	is_occupied = true
+	occupant.x = x
+	occupant.y = y
 	add_child(occupant)
 	
 func removeOccupant():
@@ -113,4 +115,4 @@ func getType() -> String:
 	return occupant.getType()
 
 func toString() -> String:
-	return "(%s, %s)" % [str(x), str(y)]
+	return "(%s, %s) - %s" % [str(x), str(y), self.occupant]
