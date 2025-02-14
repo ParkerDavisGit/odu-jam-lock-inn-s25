@@ -274,44 +274,75 @@ func playEnemyTurns(phase):
 		
 		if phase == "attack":
 			continue
+		
 		var heat_map = enemyHeatmap(enemy.x, enemy.y)
+		for idxy in range(height):
+			var s = ""
+			for idxx in range(width):
+				var c = str(heat_map[width*idxy+idxx])
+				s = s + c + " "
+			print(s)
+		
 		## Get list of player's heatmap values
 		var target_values = []
 		var target_coords = []
+		var coords_to_test = []
 		for player in players:
 			target_values.append(heat_map[width*player.y+player.x])
 			target_coords.append(player.x)
 			target_coords.append(player.y)
+			if player.x > 0:
+				coords_to_test.append(player.x-1)
+				coords_to_test.append(player.y)
+			if player.x < width-1:
+				coords_to_test.append(player.x+1)
+				coords_to_test.append(player.y)
+			if player.y > 0:
+				coords_to_test.append(player.x)
+				coords_to_test.append(player.y-1)
+			if player.y < height-1:
+				coords_to_test.append(player.x)
+				coords_to_test.append(player.y+1)
+		
+		
+		var smallest_idx = 0
+		var smallest_tile_value = 999
+		for i in range(coords_to_test.size() / 2):
+			if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] > 1:
+				if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] < smallest_tile_value:
+					if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] > 0:
+						smallest_tile_value = heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]]
+						smallest_idx = i
 		
 		## Decide who to move towards
-		var closest = target_values[0]
-		var closest_idx = 0
-		var current_idx = 0
-		for i in target_values:
-			if i > closest:
-				closest = i
-				closest_idx = current_idx
-			current_idx += 1
+		#var closest = target_values[0]
+		#var closest_idx = 0
+		#var current_idx = 0
+		#for i in target_values:
+		#	if i > closest:
+		#		closest = i
+		#		closest_idx = current_idx
+		#	current_idx += 1
 		
 		## Move
-		var idx_to_test = 0
-		var test_x = target_coords[2*closest_idx]
-		var test_y = target_coords[2*closest_idx+1]
-		
-		var to_test_x = []
-		var to_test_y = []
-		if test_x > 0:
-			to_test_x.append(-1)
-		if test_x < width-1:
+		#var idx_to_test = 0
+		#var test_x = target_coords[2*closest_idx]
+		#var test_y = target_coords[2*closest_idx+1]
+		#
+		#var to_test_x = []
+		#var to_test_y = []
+		#if test_x > 0:
+		#	to_test_x.append(-1)
+		'''if test_x < width-1:
 			to_test_x.append(1)
 		if test_y > 0:
 			to_test_y.append(-1)
 		if test_y < height-1:
-			to_test_y.append(1)
+			to_test_y.append(1)'''
 		
-		var minimum_space = [100, 0, 0]
+		'''var minimum_space = [100, 0, 0]
 		
-		for v in to_test_x:
+		for i in range(coords_to_test.size() / 2):
 			if heat_map[width*test_y+(test_x+v)] <= 0:
 				continue
 			if heat_map[width*test_y+(test_x+v)] < minimum_space[0]:
@@ -325,10 +356,36 @@ func playEnemyTurns(phase):
 			if heat_map[width*(test_y+v)+test_x] < minimum_space[0]:
 				minimum_space[0] = heat_map[width*(test_y+v)+test_x]
 				minimum_space[1] = test_x
-				minimum_space[2] = test_y+v
+				minimum_space[2] = test_y+v'''
 		
-		if minimum_space[0] == 100 or minimum_space[0] > enemy.move+1:
-			## No enemy in attackable range
+		#if minimum_space[0] == 100 or minimum_space[0] > enemy.move+1:
+		if smallest_idx > 100:
+			continue
+		if heat_map[width*coords_to_test[smallest_idx*2+1]+coords_to_test[smallest_idx*2]] > enemy.move:
+			var goal = enemy.move+1
+			var closest_x = 100
+			var closest_y = 100
+			var closest_d = 10000
+			var goal_x = coords_to_test[smallest_idx*2]
+			var goal_y = coords_to_test[smallest_idx*2+1]
+			
+			for y in range(height):
+				for x in range(width):
+					if heat_map[width*y+x] != goal:
+						continue
+					
+					var d = pow(goal_x - x, 2) + pow(goal_y - y, 2)
+					if d < closest_d:
+						closest_x = x
+						closest_y = y
+						closest_d = d
+			
+			if closest_d > 9999:
+				continue
+			
+			the_map[width*enemy.y+enemy.x].removeOccupant()
+			the_map[width*closest_y+closest_x].setOccupant(enemy)
+			
 			continue
 		
 		for idxy in range(height):
@@ -338,9 +395,12 @@ func playEnemyTurns(phase):
 				s = s + c + " "
 			print(s)
 		
-		print(str(enemy.x) + ", " + str(enemy.y) + " - " + str(minimum_space[1]) + ", " + str(minimum_space[2]))
+		#print(str(enemy.x) + ", " + str(enemy.y) + " - " + str(minimum_space[1]) + ", " + str(minimum_space[2]))
 		the_map[width*enemy.y+enemy.x].removeOccupant()
-		the_map[width*minimum_space[2]+minimum_space[1]].setOccupant(enemy)
+		the_map[width*coords_to_test[smallest_idx*2+1]+coords_to_test[smallest_idx*2]].setOccupant(enemy)
+	
+	phase = "attack"
+
 
 
 ### ALERT

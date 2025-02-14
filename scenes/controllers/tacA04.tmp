@@ -1,0 +1,124 @@
+[gd_scene load_steps=6 format=3 uid="uid://cmqqsnt4w4kmk"]
+
+[ext_resource type="Script" path="res://scripts/controllers/tactical_manager.gd" id="1_co23w"]
+[ext_resource type="Texture2D" uid="uid://cxruu6pf58vrb" path="res://assets/sign.png" id="2_1wa4f"]
+[ext_resource type="Script" path="res://scripts/controllers/tactical_ui_controller.gd" id="2_gqwrw"]
+[ext_resource type="Script" path="res://scripts/controllers/hover_information.gd" id="3_fkhkl"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_16xtx"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
+
+[node name="TacticalManager" type="Node2D"]
+script = ExtResource("1_co23w")
+
+[node name="TacticalUiController" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_gqwrw")
+
+[node name="HoverInformation" type="Control" parent="TacticalUiController"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_fkhkl")
+
+[node name="TextureRect" type="TextureRect" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1017.0
+offset_top = 112.0
+offset_right = 1440.0
+offset_bottom = 356.0
+texture = ExtResource("2_1wa4f")
+
+[node name="HP" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1035.0
+offset_top = 117.0
+offset_right = 1091.0
+offset_bottom = 151.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="MP" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1245.0
+offset_top = 120.0
+offset_right = 1329.0
+offset_bottom = 154.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="ATK" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1030.0
+offset_top = 230.0
+offset_right = 1114.0
+offset_bottom = 264.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="DEF" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1033.0
+offset_top = 268.0
+offset_right = 1117.0
+offset_bottom = 302.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="SPD" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1039.0
+offset_top = 300.0
+offset_right = 1123.0
+offset_bottom = 334.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="MV" type="Label" parent="TacticalUiController/HoverInformation"]
+layout_mode = 0
+offset_left = 1036.0
+offset_top = 176.0
+offset_right = 1120.0
+offset_bottom = 210.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="AbilitySelector" type="Control" parent="TacticalUiController"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="TacticalUiController/AbilitySelector"]
+layout_mode = 0
+offset_left = 1017.0
+offset_top = 450.0
+offset_right = 1440.0
+offset_bottom = 694.0
+texture = ExtResource("2_1wa4f")
+
+[node name="AbilityOne" type="Button" parent="TacticalUiController/AbilitySelector"]
+layout_mode = 0
+offset_left = 1043.0
+offset_top = 467.0
+offset_right = 1394.0
+offset_bottom = 522.0
+text = "Attack!"
+
+[node name="AbilityOne2" type="Button" parent="TacticalUiController/AbilitySelector"]
+layout_mode = 0
+offset_left = 1057.0
+offset_top = 538.0
+offset_right = 1425.0
+offset_bottom = 594.0
+text = "Refresh Spent Units"
+
+[node name="AbilityOne3" type="Button" parent="TacticalUiController/AbilitySelector"]
+layout_mode = 0
+offset_left = 1050.0
+offset_top = 623.0
+offset_right = 1394.0
+offset_bottom = 683.0
+text = "Battle Mode"
+
+[connection signal="pressed" from="TacticalUiController/AbilitySelector/AbilityOne" to="." method="_on_ability_one_pressed"]
+[connection signal="pressed" from="TacticalUiController/AbilitySelector/AbilityOne2" to="." method="_on_ability_one_2_pressed"]
+[connection signal="pressed" from="TacticalUiController/AbilitySelector/AbilityOne3" to="." method="_on_ability_one_3_pressed"]

@@ -92,8 +92,12 @@ func _on_tile_clicked(tile):
 			if tile.occupant.spent:
 				return
 			selected = tile
-			the_map.highlightOccupantMovement(selected)
-			uiController.toggleAbilitySelector()
+			
+			if phase == "attack":
+				the_map.highlightAttackTiles(selected)
+			else:
+				the_map.highlightOccupantMovement(selected)
+			#uiController.toggleAbilitySelector()
 		
 		return
 	
@@ -131,11 +135,16 @@ func _on_tile_clicked(tile):
 	checkTurnCycle()
 
 func _on_turn_change(type):
-	if type == "enemies":
-		the_map.playEnemyTurns(phase)
-	if type == "players":
-		the_map.refreshPlayerCharacters()
-		charactersSpent = 0
+	the_map.playEnemyTurns(phase)
+	await get_tree().create_timer(the_map.enemies.size()).timeout
+	
+	if phase == "attack":
+		phase = "move"
+	else:
+		phase = "attack"
+	
+	the_map.refreshPlayerCharacters()
+	charactersSpent = 0
 
 func _on_tile_hover(tile):
 	if tile.occupied():
