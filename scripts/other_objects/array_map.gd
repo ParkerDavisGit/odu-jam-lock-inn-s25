@@ -319,9 +319,6 @@ func enemyAttack(enemy):
 		### TODO, Angle stuff
 		return
 	
-	print("-------")
-	print(potential_targets)
-	
 	for target in potential_targets:
 		if enemy.getArchetype() == "wolf":
 			if best_target == null:
@@ -346,6 +343,13 @@ func enemyAttack(enemy):
 	
 	if best_target == null:
 		return
+	
+	if best_target.defend:
+		if enemy.attack < best_target.defense:
+			return
+		else:
+			best_target.cur_hp = best_target.cur_hp - enemy.attack + best_target.defense
+			return
 	
 	best_target.cur_hp = best_target.cur_hp - enemy.attack
 
