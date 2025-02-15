@@ -355,7 +355,6 @@ func playEnemyTurns(phase):
 		
 		if phase == "attack":
 			enemyAttack(enemy)
-			return
 		
 		var heat_map = enemyHeatmap(enemy.x, enemy.y, enemy)
 		for idxy in range(height):
