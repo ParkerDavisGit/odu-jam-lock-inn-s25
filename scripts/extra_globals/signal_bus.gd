@@ -31,3 +31,8 @@ signal on_track_play(track_name)
 signal on_turn_change(type)
 @warning_ignore("unused_signal")
 signal on_move_occupant(prev_x, prev_y, new_x, new_y)
+
+@warning_ignore("unused_signal")
+signal on_attack_phase()
+@warning_ignore("unused_signal")
+signal on_move_phase()

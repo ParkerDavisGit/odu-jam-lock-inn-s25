@@ -4,12 +4,14 @@ var max_hp = randi() % 5 + 1
 var cur_hp = max_hp
 var max_mp = randi() % 5 + 1
 var cur_mp = max_mp
-var attack = randi() % 5 + 1
+var attack = 2
 var defense = randi() % 5 + 1
 var speed = randi() % 5 + 1
 
 var move = 3
 var move_left = move
+
+var id
 
 var spent = false
 
@@ -46,3 +48,9 @@ func hoverInformation():
 
 func getType():
 	return "enemy"
+
+func getArchetype():
+	return "wolf"
+
+func getId():
+	return id

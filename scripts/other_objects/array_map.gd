@@ -9,8 +9,8 @@ var the_map
 var width: int
 var height: int
 
-var players
-var enemies
+var players: Array
+var enemies: Array
 
 static func create(new_width: int, new_height: int, level_name: String):
 	var new_map = array_map.instantiate()
@@ -39,6 +39,7 @@ static func populateMap(map, data):
 	var dummy = load("res://scenes/TacticalSimulator/characters/my_dumy_occupant.tscn")
 	var dummy_enemy = load("res://scenes/TacticalSimulator/characters/my_dummy_enemy.tscn")
 	
+	var currentId = 0
 	var line = ""
 	var idx = 0
 	for raw_line in data:
@@ -47,20 +48,26 @@ static func populateMap(map, data):
 		match line[0]:
 			"ch1":
 				var temp = dummy.instantiate()
+				temp.id = currentId
 				map.get_child(idx).setOccupant(temp)
 				map.players.append(temp)
 			"ch2":
 				var temp = dummy.instantiate()
+				temp.id = currentId
 				map.get_child(idx).setOccupant(temp)
 				map.players.append(temp)
 			"ch3":
 				var temp = dummy.instantiate()
+				temp.id = currentId
 				map.get_child(idx).setOccupant(temp)
 				map.players.append(temp)
 			"en1":
 				var temp = dummy_enemy.instantiate()
+				temp.id = currentId
 				map.get_child(idx).setOccupant(temp)
 				map.enemies.append(temp)
+		
+		currentId += 1
 
 
 
@@ -91,7 +98,7 @@ func resetMap(data):
 func clearHighlights():
 	for tile in the_map:
 		tile.highlight.visible = false
-		tile.attack_highlight.visible = false
+		tile.removeHighlights()
 		tile.lock_highlight = false
 
 ###
@@ -195,18 +202,28 @@ func highlightAttackTiles(selected):
 		if the_map[idx_right].occupied():
 			if the_map[idx_right].occupant.getType() == "enemy":
 				the_map[idx_right].addAttackHighlight()
+			elif the_map[idx_right].occupant.getType() == "player":
+				the_map[idx_right].addHealHighlight()
 	if given_x > 0:
 		if the_map[idx_left].occupied():
 			if the_map[idx_left].occupant.getType() == "enemy":
 				the_map[idx_left].addAttackHighlight()
+			elif the_map[idx_left].occupant.getType() == "player":
+				the_map[idx_left].addHealHighlight()
 	if given_y < height - 1:
 		if the_map[idx_down].occupied():
 			if the_map[idx_down].occupant.getType() == "enemy":
 				the_map[idx_down].addAttackHighlight()
+			elif the_map[idx_down].occupant.getType() == "player":
+				the_map[idx_down].addHealHighlight()
 	if given_y > 0:
 		if the_map[idx_up].occupied():
 			if the_map[idx_up].occupant.getType() == "enemy":
 				the_map[idx_up].addAttackHighlight()
+			elif the_map[idx_up].occupant.getType() == "player":
+				the_map[idx_up].addHealHighlight()
+	
+	the_map[idx].addDefendHighlight()
 
 func refreshPlayerCharacters():
 	for tile in the_map:
@@ -216,7 +233,7 @@ func refreshPlayerCharacters():
 			tile.occupant.unspend()
 
 
-func enemyHeatmap(start_x, start_y):
+func enemyHeatmap(start_x, start_y, enemy):
 	var heat_map = Array()
 	for idy in range(height):
 		for idx in range(width):
@@ -225,8 +242,9 @@ func enemyHeatmap(start_x, start_y):
 	for idy in range(height):
 		for idx in range(width):
 			if the_map[width*idy+idx].occupied():
-				heat_map[width*idy+idx] = -2
-				continue
+				if the_map[width*idy+idx].occupant.getId() != enemy.getId():
+					heat_map[width*idy+idx] = -2
+					continue
 			if the_map[width*idy+idx].unmoveable:
 				heat_map[width*idy+idx] = -1
 
@@ -268,14 +286,78 @@ func enemyHeatMapUpdate(heat_map, idx, idy, d):
 		elif heat_map[width*(idy+v)+idx] == -2:
 			heat_map[width*(idy+v)+idx] = -d
 
+func enemyAttack(enemy):
+	var x = enemy.x
+	var y = enemy.y
+	
+	var potential_targets = []
+	if enemy.x > 0:
+		if the_map[width*y+(x-1)].occupied():
+			if the_map[width*y+(x-1)].getType() == "player":
+				if the_map[width*y+(x-1)].occupant.cur_hp > 0:
+					potential_targets.append(the_map[width*y+(x-1)].occupant)
+	
+	if enemy.x < width-1:
+		if the_map[width*y+(x+1)].occupied():
+			if the_map[width*y+(x+1)].getType() == "player":
+				if the_map[width*y+(x+1)].occupant.cur_hp > 0:
+					potential_targets.append(the_map[width*y+(x+1)].occupant)
+	if enemy.y > 0:
+		if the_map[width*(y-1)+x].occupied():
+			if the_map[width*(y-1)+x].getType() == "player":
+				if the_map[width*(y-1)+x].occupant.cur_hp > 0:
+					potential_targets.append(the_map[width*(y-1)+x].occupant)
+	if enemy.y < height-1:
+		if the_map[width*(y+1)+x].occupied():
+			if the_map[width*(y+1)+x].getType() == "player":
+				if the_map[width*(y+1)+x].occupant.cur_hp > 0:
+					potential_targets.append(the_map[width*(y+1)+x].occupant)
+	
+	var best_target = null
+	
+	if enemy.getArchetype() == "angel":
+		### TODO, Angle stuff
+		return
+	
+	print("-------")
+	print(potential_targets)
+	
+	for target in potential_targets:
+		if enemy.getArchetype() == "wolf":
+			if best_target == null:
+				best_target = target
+				continue
+			
+			if target.cur_hp < best_target.cur_hp:
+				best_target = target
+				continue
+			continue
+		
+		elif enemy.getArchetype() == "human":
+			if target.isHealer():
+				best_target = target
+				
+	
+	## This SHOULD only run for humans who aren't next to a healer
+	if best_target == null:
+		if potential_targets.size() > 0:
+			best_target = potential_targets[0]
+		return
+	
+	if best_target == null:
+		return
+	
+	best_target.cur_hp = best_target.cur_hp - enemy.attack
+
 func playEnemyTurns(phase):
 	for enemy in enemies:
 		await get_tree().create_timer(1).timeout
 		
 		if phase == "attack":
-			continue
+			enemyAttack(enemy)
+			return
 		
-		var heat_map = enemyHeatmap(enemy.x, enemy.y)
+		var heat_map = enemyHeatmap(enemy.x, enemy.y, enemy)
 		for idxy in range(height):
 			var s = ""
 			for idxx in range(width):
@@ -308,58 +390,14 @@ func playEnemyTurns(phase):
 		var smallest_idx = 0
 		var smallest_tile_value = 999
 		for i in range(coords_to_test.size() / 2):
-			if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] > 1:
+			if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] > 0:
 				if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] < smallest_tile_value:
 					if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] > 0:
 						smallest_tile_value = heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]]
 						smallest_idx = i
 		
-		## Decide who to move towards
-		#var closest = target_values[0]
-		#var closest_idx = 0
-		#var current_idx = 0
-		#for i in target_values:
-		#	if i > closest:
-		#		closest = i
-		#		closest_idx = current_idx
-		#	current_idx += 1
-		
-		## Move
-		#var idx_to_test = 0
-		#var test_x = target_coords[2*closest_idx]
-		#var test_y = target_coords[2*closest_idx+1]
-		#
-		#var to_test_x = []
-		#var to_test_y = []
-		#if test_x > 0:
-		#	to_test_x.append(-1)
-		'''if test_x < width-1:
-			to_test_x.append(1)
-		if test_y > 0:
-			to_test_y.append(-1)
-		if test_y < height-1:
-			to_test_y.append(1)'''
-		
-		'''var minimum_space = [100, 0, 0]
-		
-		for i in range(coords_to_test.size() / 2):
-			if heat_map[width*test_y+(test_x+v)] <= 0:
-				continue
-			if heat_map[width*test_y+(test_x+v)] < minimum_space[0]:
-				minimum_space[0] = heat_map[width*test_y+(test_x+v)]
-				minimum_space[1] = test_x+v
-				minimum_space[2] = test_y
-
-		for v in to_test_y:
-			if heat_map[width*(test_y+v)+test_x] <= 0:
-				continue
-			if heat_map[width*(test_y+v)+test_x] < minimum_space[0]:
-				minimum_space[0] = heat_map[width*(test_y+v)+test_x]
-				minimum_space[1] = test_x
-				minimum_space[2] = test_y+v'''
-		
 		#if minimum_space[0] == 100 or minimum_space[0] > enemy.move+1:
-		if smallest_idx > 100:
+		if smallest_tile_value > 100:
 			continue
 		if heat_map[width*coords_to_test[smallest_idx*2+1]+coords_to_test[smallest_idx*2]] > enemy.move:
 			var goal = enemy.move+1

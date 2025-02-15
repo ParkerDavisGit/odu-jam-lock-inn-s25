@@ -13,6 +13,8 @@ var is_occupied
 var texture
 var highlight
 var attack_highlight
+var defend_highlight
+var heal_highlight
 
 var lock_highlight
 var unmoveable
@@ -29,9 +31,13 @@ static func create(new_x: int, new_y: int, type: String) -> MapTile:
 	new_tile.texture = new_tile.get_child(0)
 	new_tile.highlight = new_tile.get_child(1)
 	new_tile.attack_highlight = new_tile.get_child(2)
+	new_tile.defend_highlight = new_tile.get_child(3)
+	new_tile.heal_highlight = new_tile.get_child(4)
 	
 	new_tile.highlight.visible = false
 	new_tile.attack_highlight.visible = false
+	new_tile.defend_highlight.visible = false
+	new_tile.heal_highlight.visible = false
 	
 	new_tile.lock_highlight = false
 
@@ -84,8 +90,16 @@ func occupied() -> bool:
 func addAttackHighlight():
 	attack_highlight.visible = true
 
-func removeAttackHighlight():
+func addDefendHighlight():
+	defend_highlight.visible = true
+
+func addHealHighlight():
+	heal_highlight.visible = true
+
+func removeHighlights():
 	attack_highlight.visible = false
+	defend_highlight.visible = false
+	heal_highlight.visible = false
 
 
 ##### [ SIGNALS ] #####################

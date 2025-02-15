@@ -1,17 +1,22 @@
 extends Sprite2D
 
-var max_hp = randi() % 5 + 1
+var max_hp = 5
 var cur_hp = max_hp
-var max_mp = randi() % 5 + 1
+var max_mp = 4
 var cur_mp = max_mp
-var attack = randi() % 5 + 1
-var defense = randi() % 5 + 1
+var attack = 3
+var defense = 1
 var speed = 5
+
+var heal = 1
 
 var move = 6
 var move_left = move
 
+var id
+
 var spent = false
+var defend = false
 
 var x
 var y
@@ -45,3 +50,14 @@ func hoverInformation():
 
 func getType():
 	return "player"
+
+func isHealer():
+	false
+
+func healBy(amount):
+	cur_hp += amount
+	if cur_hp > max_hp:
+		cur_hp = max_hp
+
+func getId():
+	return id

@@ -51,14 +51,14 @@ func drawTheTestZone() -> void:
 
 
 func attack(tile):
-	var damage = selected.occupant.attack - tile.occupant.defense 
+	var damage = selected.occupant.attack
 	
 	if damage < 0:
 		damage = 0
 	
 	tile.occupant.cur_hp = tile.occupant.cur_hp - damage
 	
-	if tile.occupant.cur_hp < 0:
+	if tile.occupant.cur_hp <= 0:
 		kill(tile)
 
 
@@ -66,12 +66,18 @@ func kill(tile: MapTile):
 	if tile.occupant.getType() == "player":
 		charactersAlive -= 1
 	
-	var add_corpse = tile.occupant.getType() == "enemy"
+	elif tile.occupant.getType() == "enemy":
+		for i in range(the_map.enemies.size()):
+			if the_map.enemies[i].getId() == tile.occupant.getId():
+				the_map.enemies.pop_at(i)
+				break
+	
+	#var add_corpse = tile.occupant.getType() == "enemy"
 	
 	tile.removeOccupant()
 	
-	if add_corpse:
-		tile.setOccupant(packaged_corpse.instantiate())
+	#if add_corpse:
+	#	tile.setOccupant(packaged_corpse.instantiate())
 	
 	pass
 
@@ -102,14 +108,25 @@ func _on_tile_clicked(tile):
 		return
 	
 	if tile.occupied():
-		if tile.attack_highlight.visible:
-			attack(tile)
+		if selected == null:
+			return
+		if phase == "attack":
+			if tile.attack_highlight.visible:
+				attack(tile)
+			if tile.defend_highlight.visible:
+				tile.occupant.defend = true
+			if tile.heal_highlight.visible:
+				tile.occupant.healBy(selected.occupant.heal)
+			
+			print(selected)
 			selected.occupant.spend()
+			selected = null
+			the_map.clearHighlights()
 			checkTurnCycle()
 			return
 		
-		if tile.occupant == selected.occupant:
-			pass
+		#if tile.occupant == selected.occupant:
+			#pass
 			## THIS IS WHERE DESELECTING HAPPENS
 			### NOTICE ME
 			#### ALERT
@@ -133,6 +150,17 @@ func _on_tile_clicked(tile):
 	selected = null
 	uiController.toggleAbilitySelector()
 	checkTurnCycle()
+	
+	return false
+
+func undefendAll():
+	for tile in the_map.the_map:
+		if !tile.occupied():
+			continue
+		if tile.occupant.getType() != "player":
+			continue
+		if tile.occupant.defend:
+			tile.occupant.defend = false
 
 func _on_turn_change(type):
 	the_map.playEnemyTurns(phase)
@@ -140,6 +168,7 @@ func _on_turn_change(type):
 	
 	if phase == "attack":
 		phase = "move"
+		undefendAll()
 	else:
 		phase = "attack"
 	
@@ -154,8 +183,7 @@ func _on_tile_hover(tile):
 
 
 func _on_ability_one_pressed() -> void:
-	if not battle_mode:
-		return
+	
 	
 	the_map.highlightAttackTiles(selected)
 
