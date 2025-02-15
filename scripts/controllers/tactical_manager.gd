@@ -19,12 +19,12 @@ var enemies
 var packaged_corpse
 
 ## INIT YAY
-func create(level_name):
+func create(level_name, cc):
 	SignalBus.on_tile_clicked.connect(_on_tile_clicked)
 	SignalBus.on_tile_hover.connect(_on_tile_hover)
 	
 	#the_map = load("res://scenes/TacticalSimulator/array_map.tscn").instantiate()
-	the_map = ArrayMap.create(10, 10, level_name)
+	the_map = ArrayMap.create(10, 10, level_name, cc)
 	add_child(the_map)
 	
 	uiController = get_child(0)

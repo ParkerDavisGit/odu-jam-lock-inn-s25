@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://scripts/root.gd" id="1_upugp"]
 [ext_resource type="PackedScene" uid="uid://bxwlc8a2n7n4b" path="res://scenes/controllers/ui_controller.tscn" id="3_ipm76"]
 [ext_resource type="PackedScene" uid="uid://b08rs1kksf2m4" path="res://scenes/controllers/game_controller.tscn" id="4_ek5to"]
-[ext_resource type="Script" path="res://scripts/controllers/ui_controller.gd" id="4_i82pl"]
 [ext_resource type="PackedScene" uid="uid://mig6het7p65o" path="res://scenes/controllers/audio_controller.tscn" id="5_6e4tj"]
+[ext_resource type="PackedScene" uid="uid://ctv4ymxkdrskx" path="res://scenes/controllers/character_controller.tscn" id="6_3ilka"]
 
 [node name="Root" type="Node2D"]
 script = ExtResource("1_upugp")
@@ -12,6 +12,7 @@ script = ExtResource("1_upugp")
 [node name="GameController" parent="." instance=ExtResource("4_ek5to")]
 
 [node name="UiController" parent="." instance=ExtResource("3_ipm76")]
-script = ExtResource("4_i82pl")
 
 [node name="AudioController" parent="." instance=ExtResource("5_6e4tj")]
+
+[node name="CharacterController" parent="." instance=ExtResource("6_3ilka")]

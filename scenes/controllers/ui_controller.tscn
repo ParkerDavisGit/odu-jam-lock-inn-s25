@@ -1,4 +1,7 @@
-[gd_scene format=3 uid="uid://bxwlc8a2n7n4b"]
+[gd_scene load_steps=3 format=3 uid="uid://bxwlc8a2n7n4b"]
+
+[ext_resource type="PackedScene" uid="uid://bonh7o4qt67lr" path="res://scenes/ui/piece_selection_menu.tscn" id="1_buk1d"]
+[ext_resource type="Script" path="res://scripts/controllers/ui_controller.gd" id="1_s7mx7"]
 
 [node name="UiController" type="Control"]
 layout_mode = 3
@@ -7,3 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_s7mx7")
+
+[node name="PieceSelectionMenu" parent="." instance=ExtResource("1_buk1d")]
+layout_mode = 1

@@ -12,7 +12,9 @@ var height: int
 var players: Array
 var enemies: Array
 
-static func create(new_width: int, new_height: int, level_name: String):
+var character_controller
+
+static func create(new_width: int, new_height: int, level_name: String, cc):
 	var new_map = array_map.instantiate()
 	var map_data = readMapData(level_name)
 	var char_data = readCharData(level_name)
@@ -23,8 +25,11 @@ static func create(new_width: int, new_height: int, level_name: String):
 	new_map.players = []
 	new_map.enemies = []
 	
+	new_map.character_controller = cc
+	print(cc.human)
+	
 	new_map.resetMap(map_data)
-	populateMap(new_map, char_data)
+	populateMap(new_map, char_data, cc)
 	
 	return new_map
 
@@ -35,7 +40,7 @@ static func readCharData(level_name):
 	data = data.slice(0, data.size()-1)
 	return data
 
-static func populateMap(map, data):
+static func populateMap(map, data, cc):
 	var dummy = load("res://scenes/TacticalSimulator/characters/my_dumy_occupant.tscn")
 	var dummy_enemy = load("res://scenes/TacticalSimulator/characters/my_dummy_enemy.tscn")
 	
@@ -47,17 +52,17 @@ static func populateMap(map, data):
 		idx = map.width*int(line[2]) + int(line[1])
 		match line[0]:
 			"ch1":
-				var temp = dummy.instantiate()
+				var temp = cc.guard
 				temp.id = currentId
 				map.get_child(idx).setOccupant(temp)
 				map.players.append(temp)
 			"ch2":
-				var temp = dummy.instantiate()
+				var temp = cc.human
 				temp.id = currentId
 				map.get_child(idx).setOccupant(temp)
 				map.players.append(temp)
 			"ch3":
-				var temp = dummy.instantiate()
+				var temp = cc.angel
 				temp.id = currentId
 				map.get_child(idx).setOccupant(temp)
 				map.players.append(temp)
@@ -118,7 +123,7 @@ func getCharPrintValue(idx: int) -> String:
 
 #####[ Stupid Heatmap Stuff ]##########
 func highlightOccupantMovement(tile):
-	var distance = tile.occupant.speed
+	var distance = tile.occupant.move
 	var heat_map = tilemapToHeatmap(tile.x, tile.y, distance)
 	
 	for idxy in range(height):

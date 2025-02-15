@@ -43,3 +43,15 @@ func _on_default_pressed() -> void:
 func _on_level_back_pressed() -> void:
 	get_child(0).visible = true
 	get_child(1).visible = false
+
+
+func _on_button_pressed() -> void:
+	SignalBus.on_start_editing.emit("guard")
+
+
+func _on_button_2_pressed() -> void:
+	SignalBus.on_start_editing.emit("human")
+
+
+func _on_button_3_pressed() -> void:
+	SignalBus.on_start_editing.emit("angel")

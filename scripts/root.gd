@@ -5,6 +5,7 @@ var paused = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.on_quit.connect(_on_quit)
+	SignalBus.on_connect_character_controller.emit(get_child(3))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

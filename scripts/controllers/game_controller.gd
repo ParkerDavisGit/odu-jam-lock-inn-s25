@@ -19,7 +19,7 @@ func _on_load_level(level_name):
 		level = null
 	
 	level = packaged_tactical_level.instantiate()
-	level.create(level_name)
+	level.create(level_name, get_parent().get_child(3))
 	add_child(level)
 
 func _on_back_to_main_menu():

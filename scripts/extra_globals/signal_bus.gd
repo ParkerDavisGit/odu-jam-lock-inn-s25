@@ -36,3 +36,11 @@ signal on_move_occupant(prev_x, prev_y, new_x, new_y)
 signal on_attack_phase()
 @warning_ignore("unused_signal")
 signal on_move_phase()
+
+@warning_ignore("unused_signal")
+signal on_start_editing(character)
+@warning_ignore("unused_signal")
+signal on_part_change(species, part, tier)
+
+@warning_ignore("unused_signal")
+signal on_connect_character_controller(the_cc)

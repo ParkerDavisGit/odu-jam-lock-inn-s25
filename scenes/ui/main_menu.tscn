@@ -137,6 +137,28 @@ offset_bottom = 90.0
 text = "Back to Menu"
 label_settings = SubResource("LabelSettings_yuycc")
 
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 76.0
+offset_top = 454.0
+offset_right = 261.0
+offset_bottom = 535.0
+text = "EDIT GUARD"
+
+[node name="Button2" type="Button" parent="."]
+offset_left = 80.0
+offset_top = 620.0
+offset_right = 265.0
+offset_bottom = 701.0
+text = "EDIT HUMAN"
+
+[node name="Button3" type="Button" parent="."]
+offset_left = 72.0
+offset_top = 769.0
+offset_right = 257.0
+offset_bottom = 850.0
+text = "EDIT ANGEL"
+
 [connection signal="pressed" from="Base/ToLevelSelect" to="." method="_on_to_level_select_pressed"]
 [connection signal="pressed" from="Base/QUITGAME" to="." method="_on_quitgame_pressed"]
 [connection signal="pressed" from="LevelSelect/1" to="." method="_on_one_pressed"]
@@ -144,3 +166,6 @@ label_settings = SubResource("LabelSettings_yuycc")
 [connection signal="pressed" from="LevelSelect/3" to="." method="_on_three_pressed"]
 [connection signal="pressed" from="LevelSelect/default" to="." method="_on_default_pressed"]
 [connection signal="pressed" from="LevelSelect/back" to="." method="_on_level_back_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Button3" to="." method="_on_button_3_pressed"]

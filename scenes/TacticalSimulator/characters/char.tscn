@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2m20ljdo0rmm"]
+
+[ext_resource type="Texture2D" uid="uid://bhtg5ajp826lc" path="res://assets/dummy.png" id="1_kncib"]
+[ext_resource type="Script" path="res://scripts/characters/character.gd" id="2_uyklb"]
+
+[node name="MyDumyOccupant" type="Sprite2D"]
+position = Vector2(32, 32)
+texture = ExtResource("1_kncib")
+script = ExtResource("2_uyklb")

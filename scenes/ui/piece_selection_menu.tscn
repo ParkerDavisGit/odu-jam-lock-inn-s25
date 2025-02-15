@@ -1,0 +1,130 @@
+[gd_scene load_steps=11 format=3 uid="uid://bonh7o4qt67lr"]
+
+[ext_resource type="Script" path="res://scripts/ui/piece_selection_menu.gd" id="1_jmp8n"]
+[ext_resource type="Texture2D" uid="uid://cyc7fpqwi37le" path="res://assets/pieces/angel_chest_1.png" id="1_qxkdt"]
+[ext_resource type="Texture2D" uid="uid://bpp45gsfga0yy" path="res://assets/pieces/human_limbs_1.png" id="2_pe4p2"]
+[ext_resource type="Texture2D" uid="uid://cjsk4y8or85fu" path="res://assets/pieces/angel_head_1.png" id="2_w4xys"]
+[ext_resource type="Texture2D" uid="uid://6htfrsbmhomk" path="res://assets/pieces/guard_limbs_1.png" id="3_s4dcu"]
+[ext_resource type="Texture2D" uid="uid://boy05xkxegiw0" path="res://assets/pieces/angel_limbs_1.png" id="3_vkn6g"]
+[ext_resource type="Texture2D" uid="uid://dqrr64xwvd6sk" path="res://assets/pieces/human_chest_1.png" id="5_8qgyu"]
+[ext_resource type="Texture2D" uid="uid://2k0yhsyyftex" path="res://assets/pieces/guard_chest_1.png" id="6_xhe7a"]
+[ext_resource type="Texture2D" uid="uid://ulqh6uac8o3g" path="res://assets/pieces/human_head_1.png" id="8_2bl1f"]
+[ext_resource type="Texture2D" uid="uid://d1dwiuutqi2nv" path="res://assets/pieces/guard_head_1.png" id="9_tks3y"]
+
+[node name="PieceSelectionMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jmp8n")
+
+[node name="HeadPreview" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(407, 431)
+scale = Vector2(4, 4)
+texture = ExtResource("2_w4xys")
+
+[node name="ChestPreview" type="Sprite2D" parent="."]
+position = Vector2(407, 431)
+scale = Vector2(4, 4)
+texture = ExtResource("1_qxkdt")
+
+[node name="LimbsPreview" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(407, 431)
+scale = Vector2(4, 4)
+texture = ExtResource("3_vkn6g")
+
+[node name="ah_one" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 771.0
+offset_top = 179.0
+offset_right = 835.0
+offset_bottom = 243.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("2_w4xys")
+
+[node name="hl_one" type="TextureButton" parent="."]
+offset_left = 1235.0
+offset_top = 566.0
+offset_right = 1299.0
+offset_bottom = 630.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("2_pe4p2")
+
+[node name="gl_one" type="TextureButton" parent="."]
+offset_left = 996.0
+offset_top = 555.0
+offset_right = 1060.0
+offset_bottom = 619.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("3_s4dcu")
+
+[node name="al_one" type="TextureButton" parent="."]
+offset_left = 787.0
+offset_top = 568.0
+offset_right = 851.0
+offset_bottom = 632.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("3_vkn6g")
+
+[node name="hc_one" type="TextureButton" parent="."]
+offset_left = 1213.0
+offset_top = 385.0
+offset_right = 1277.0
+offset_bottom = 449.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("5_8qgyu")
+
+[node name="gc_one" type="TextureButton" parent="."]
+offset_left = 989.0
+offset_top = 364.0
+offset_right = 1053.0
+offset_bottom = 428.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("6_xhe7a")
+
+[node name="ac_one" type="TextureButton" parent="."]
+offset_left = 759.0
+offset_top = 368.0
+offset_right = 823.0
+offset_bottom = 432.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("1_qxkdt")
+
+[node name="hh_one" type="TextureButton" parent="."]
+offset_left = 1211.0
+offset_top = 183.0
+offset_right = 1275.0
+offset_bottom = 247.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("8_2bl1f")
+
+[node name="gh_one" type="TextureButton" parent="."]
+offset_left = 1015.0
+offset_top = 184.0
+offset_right = 1079.0
+offset_bottom = 248.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("9_tks3y")
+
+[node name="save" type="Button" parent="."]
+layout_mode = 0
+offset_left = 283.0
+offset_top = 743.0
+offset_right = 527.0
+offset_bottom = 838.0
+text = "Save"
+
+[connection signal="pressed" from="ah_one" to="." method="_on_ah_one_pressed"]
+[connection signal="pressed" from="hl_one" to="." method="_on_hl_one_pressed"]
+[connection signal="pressed" from="gl_one" to="." method="_on_gl_one_pressed"]
+[connection signal="pressed" from="al_one" to="." method="_on_al_one_pressed"]
+[connection signal="pressed" from="hc_one" to="." method="_on_hc_one_pressed"]
+[connection signal="pressed" from="gc_one" to="." method="_on_gc_one_pressed"]
+[connection signal="pressed" from="ac_one" to="." method="_on_ac_one_pressed"]
+[connection signal="pressed" from="hh_one" to="." method="_on_hh_one_pressed"]
+[connection signal="pressed" from="gh_one" to="." method="_on_gh_one_pressed"]
+[connection signal="pressed" from="save" to="." method="_on_save_pressed"]
