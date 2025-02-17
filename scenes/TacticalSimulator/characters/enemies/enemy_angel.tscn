@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://kgyh46v48m5x"]
+
+[ext_resource type="Texture2D" uid="uid://de8p21bxf8ewx" path="res://assets/enemies/Angel_Watcher_Left_Idle.png" id="1_5j7es"]
+[ext_resource type="Script" path="res://scenes/TacticalSimulator/characters/enemies/enemy_angel.gd" id="2_7sxq5"]
+
+[node name="MyDumyOccupant" type="Sprite2D"]
+position = Vector2(29, 32)
+scale = Vector2(0.286, 0.286)
+texture = ExtResource("1_5j7es")
+script = ExtResource("2_7sxq5")

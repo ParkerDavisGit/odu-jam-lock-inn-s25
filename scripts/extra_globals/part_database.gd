@@ -3,17 +3,17 @@ extends Node
 var DB = {}
 
 func _ready():
-	add("head_guard_1",  0, 0, 0, 1, 0)
-	add("chest_guard_1", 5, 0, 1, 0, 0)
-	add("limbs_guard_1", 0, 3, 0, 0, 5)
+	add("guard_head_1",  1, 0, 0, 1, 0)
+	add("guard_chest_1", 3, 1, 1, 0, 0)
+	add("guard_limbs_1", 0, 2, 0, 0, 5)
 	
-	add("head_human_1",  0, 0, 0, 1, 0)
-	add("chest_human_1", 7, 0, 3, 0, 0)
-	add("limbs_human_1", 0, 2, 0, 0, 4)
+	add("human_head_1",  1, 0, 1, 1, 0)
+	add("human_chest_1", 4, 0, 3, 0, 0)
+	add("human_limbs_1", 2, 1, 1, 0, 3)
 	
-	add("head_angel_1",  0, 0, 0, 3, 0)
-	add("chest_angel_1", 5, 0, 1, 0, 0)
-	add("limbs_angel_1", 0, 1, 0, 0, 3)
+	add("angel_head_1",  0, 0, 0, 2, 0)
+	add("angel_chest_1", 3, 0, 1, 1, 0)
+	add("angel_limbs_1", 0, 0, 0, 1, 4)
 
 func add(the_type, hp, atk, def, mag, mv):
 	var temp_part = {}

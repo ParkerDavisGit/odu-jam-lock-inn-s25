@@ -1,0 +1,6 @@
+ch1 2 2
+ch2 2 1
+ch3 1 2
+guard 6 6
+angel 7 8
+angel 7 2

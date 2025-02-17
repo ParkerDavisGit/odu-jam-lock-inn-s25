@@ -14,12 +14,9 @@ func _ready() -> void:
 	#human.texture = load("res://assets/dummy.png")
 	#angel.texture = load("res://assets/dummy.png")
 	
-	guard.create()
-	human.create()
-	angel.create()
-	
-	
-	
+	guard.create("guard")
+	human.create("human")
+	angel.create("angel")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

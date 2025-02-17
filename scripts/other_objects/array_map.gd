@@ -26,7 +26,7 @@ static func create(new_width: int, new_height: int, level_name: String, cc):
 	new_map.enemies = []
 	
 	new_map.character_controller = cc
-	print(cc.human)
+	#print(cc.human)
 	
 	new_map.resetMap(map_data)
 	populateMap(new_map, char_data, cc)
@@ -44,6 +44,10 @@ static func populateMap(map, data, cc):
 	var dummy = load("res://scenes/TacticalSimulator/characters/my_dumy_occupant.tscn")
 	var dummy_enemy = load("res://scenes/TacticalSimulator/characters/my_dummy_enemy.tscn")
 	
+	var guard = load("res://scenes/TacticalSimulator/characters/enemies/enemy_guard.tscn")
+	var human = load("res://scenes/TacticalSimulator/characters/enemies/enemy_human.tscn")
+	var angel = load("res://scenes/TacticalSimulator/characters/enemies/enemy_angel.tscn")
+	
 	var currentId = 0
 	var line = ""
 	var idx = 0
@@ -52,22 +56,32 @@ static func populateMap(map, data, cc):
 		idx = map.width*int(line[2]) + int(line[1])
 		match line[0]:
 			"ch1":
-				var temp = cc.guard
+				var temp = cc.guard.clone()
 				temp.id = currentId
 				map.get_child(idx).setOccupant(temp)
 				map.players.append(temp)
 			"ch2":
-				var temp = cc.human
+				var temp = cc.human.clone()
 				temp.id = currentId
 				map.get_child(idx).setOccupant(temp)
 				map.players.append(temp)
 			"ch3":
-				var temp = cc.angel
+				var temp = cc.angel.clone()
 				temp.id = currentId
 				map.get_child(idx).setOccupant(temp)
 				map.players.append(temp)
-			"en1":
-				var temp = dummy_enemy.instantiate()
+			"guard":
+				var temp = guard.instantiate()
+				temp.id = currentId
+				map.get_child(idx).setOccupant(temp)
+				map.enemies.append(temp)
+			"human":
+				var temp = human.instantiate()
+				temp.id = currentId
+				map.get_child(idx).setOccupant(temp)
+				map.enemies.append(temp)
+			"angel":
+				var temp = angel.instantiate()
 				temp.id = currentId
 				map.get_child(idx).setOccupant(temp)
 				map.enemies.append(temp)
@@ -321,11 +335,42 @@ func enemyAttack(enemy):
 	var best_target = null
 	
 	if enemy.getArchetype() == "angel":
-		### TODO, Angle stuff
+		var lowest_health_percent = 1
+		var temp
+		if the_map[width*y+(x+1)].getType() == "enemy":
+			temp = the_map[width*y+(x+1)].occupant.cur_hp / the_map[width*y+(x+1)].occupant.max_hp
+			if temp < lowest_health_percent:
+				best_target = the_map[width*y+(x+1)].occupant
+		
+		if the_map[width*y+(x-1)].getType() == "enemy":
+			temp = the_map[width*y+(x-1)].occupant.cur_hp / the_map[width*y+(x-1)].occupant.max_hp
+			if temp < lowest_health_percent:
+				best_target = the_map[width*y+(x-1)].occupant
+			
+		if the_map[width*(y-1)+x].getType() == "enemy":
+			temp = the_map[width*(y-1)+x].occupant.cur_hp / the_map[width*(y-1)+x].occupant.max_hp
+			if temp < lowest_health_percent:
+				best_target = the_map[width*(y-1)+x].occupant
+				
+		if the_map[width*(y+1)+x].getType() == "enemy":
+			temp = the_map[width*(y+1)+x].occupant.cur_hp / the_map[width*(y+1)+x].occupant.max_hp
+			if temp < lowest_health_percent:
+				best_target = the_map[width*(y+1)+x].occupant
+		
+		if best_target == null:
+			await get_tree().create_timer(.5).timeout
+			return
+		
+		best_target.healBy(enemy.heal)
+		SignalBus.on_sound_play.emit("heal")
+		the_map[width*best_target.y+best_target.x].heal_highlight.visible = true
+		
+		await get_tree().create_timer(.5).timeout
 		return
 	
+	var found_healer = false
 	for target in potential_targets:
-		if enemy.getArchetype() == "wolf":
+		if enemy.getArchetype() == "guard":
 			if best_target == null:
 				best_target = target
 				continue
@@ -336,77 +381,200 @@ func enemyAttack(enemy):
 			continue
 		
 		elif enemy.getArchetype() == "human":
+			if found_healer:
+				## Need to select closest healer, but that's for later
+				continue
+			
 			if target.isHealer():
 				best_target = target
-				
+				found_healer = true
+			
+			else:
+				if best_target == null:
+					best_target = target
+					continue
+	
 	
 	## This SHOULD only run for humans who aren't next to a healer
 	if best_target == null:
 		if potential_targets.size() > 0:
 			best_target = potential_targets[0]
-		return
+		
+		else:
+			await get_tree().create_timer(.5).timeout
+			return
 	
 	if best_target == null:
+		await get_tree().create_timer(.5).timeout
 		return
 	
+	the_map[width*best_target.y+best_target.x].attack_highlight.visible = true
 	if best_target.defend:
 		if enemy.attack < best_target.defense:
+			await get_tree().create_timer(.5).timeout
 			return
 		else:
 			best_target.cur_hp = best_target.cur_hp - enemy.attack + best_target.defense
+			if best_target.cur_hp <= 0:
+				get_parent().kill(best_target.get_parent())
+			await get_tree().create_timer(.5).timeout
 			return
 	
+	
 	best_target.cur_hp = best_target.cur_hp - enemy.attack
+	SignalBus.on_sound_play.emit("attack")
+	
+	if best_target.cur_hp <= 0:
+		get_parent().kill(best_target.get_parent())
+	await get_tree().create_timer(.5).timeout
 
 func playEnemyTurns(phase):
 	for enemy in enemies:
-		await get_tree().create_timer(1).timeout
-		
 		if phase == "attack":
 			enemyAttack(enemy)
+			await get_tree().create_timer(1).timeout
+			clearHighlights()
+			continue
+		await get_tree().create_timer(.5).timeout
 		
 		var heat_map = enemyHeatmap(enemy.x, enemy.y, enemy)
-		for idxy in range(height):
-			var s = ""
-			for idxx in range(width):
-				var c = str(heat_map[width*idxy+idxx])
-				s = s + c + " "
-			print(s)
-		
+		#for idxy in range(height):
+		#	var s = ""
+		#	for idxx in range(width):
+		#		var c = str(heat_map[width*idxy+idxx])
+		#		s = s + c + " "
+		#	print(s)
+		if enemy.getArchetype() == "angel":
+			for idxy in range(height):
+				var s = ""
+				for idxx in range(width):
+					var c = str(heat_map[width*idxy+idxx])
+					s = s + c + " "
+				print(s)
 		## Get list of player's heatmap values
 		var target_values = []
 		var target_coords = []
 		var coords_to_test = []
-		for player in players:
-			target_values.append(heat_map[width*player.y+player.x])
-			target_coords.append(player.x)
-			target_coords.append(player.y)
-			if player.x > 0:
-				coords_to_test.append(player.x-1)
-				coords_to_test.append(player.y)
-			if player.x < width-1:
-				coords_to_test.append(player.x+1)
-				coords_to_test.append(player.y)
-			if player.y > 0:
-				coords_to_test.append(player.x)
-				coords_to_test.append(player.y-1)
-			if player.y < height-1:
-				coords_to_test.append(player.x)
-				coords_to_test.append(player.y+1)
+		var found_healer = false
+		var healer_values = []
+		var healer_coords = []
+		var healer_coords_to_test = []
+		if enemy.getArchetype() != "angel":
+			for player in players:
+				target_values.append(heat_map[width*player.y+player.x])
+				target_coords.append(player.x)
+				target_coords.append(player.y)
+				if player.isHealer():
+					healer_values.append(heat_map[width*player.y+player.x])
+					healer_coords.append(player.x)
+					healer_coords.append(player.y)
+					found_healer = true
+					if player.x > 0:
+						healer_coords_to_test.append(player.x-1)
+						healer_coords_to_test.append(player.y)
+					if player.x < width-1:
+						healer_coords_to_test.append(player.x+1)
+						healer_coords_to_test.append(player.y)
+					if player.y > 0:
+						healer_coords_to_test.append(player.x)
+						healer_coords_to_test.append(player.y-1)
+					if player.y < height-1:
+						healer_coords_to_test.append(player.x)
+						healer_coords_to_test.append(player.y+1)
+				if player.x > 0:
+					coords_to_test.append(player.x-1)
+					coords_to_test.append(player.y)
+				if player.x < width-1:
+					coords_to_test.append(player.x+1)
+					coords_to_test.append(player.y)
+				if player.y > 0:
+					coords_to_test.append(player.x)
+					coords_to_test.append(player.y-1)
+				if player.y < height-1:
+					coords_to_test.append(player.x)
+					coords_to_test.append(player.y+1)
+		else:
+			for player in enemies:
+				if (player.getId() == enemy.getId()):
+					continue
+				if player.getArchetype() == "angel":
+					continue
+				target_values.append(heat_map[width*player.y+player.x])
+				target_coords.append(player.x)
+				target_coords.append(player.y)
+				if player.x > 0:
+					coords_to_test.append(player.x-1)
+					coords_to_test.append(player.y)
+				if player.x < width-1:
+					coords_to_test.append(player.x+1)
+					coords_to_test.append(player.y)
+				if player.y > 0:
+					coords_to_test.append(player.x)
+					coords_to_test.append(player.y-1)
+				if player.y < height-1:
+					coords_to_test.append(player.x)
+					coords_to_test.append(player.y+1)
 		
 		
 		var smallest_idx = 0
 		var smallest_tile_value = 999
-		for i in range(coords_to_test.size() / 2):
-			if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] > 0:
-				if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] < smallest_tile_value:
+		var found_healer_coords = false
+		if found_healer:
+			for i in range(healer_coords_to_test.size() / 2):
+				if heat_map[width*healer_coords_to_test[i*2+1]+healer_coords_to_test[i*2]] > 0:
+					if heat_map[width*healer_coords_to_test[i*2+1]+healer_coords_to_test[i*2]] < smallest_tile_value:
+						if heat_map[width*healer_coords_to_test[i*2+1]+healer_coords_to_test[i*2]] > 0:
+							smallest_tile_value = heat_map[width*healer_coords_to_test[i*2+1]+healer_coords_to_test[i*2]]
+							smallest_idx = i
+							found_healer_coords = true
+			if smallest_tile_value == 999:
+				for i in range(coords_to_test.size() / 2):
 					if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] > 0:
-						smallest_tile_value = heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]]
-						smallest_idx = i
+						if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] < smallest_tile_value:
+							if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] > 0:
+								smallest_tile_value = heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]]
+								smallest_idx = i
+		else:
+			for i in range(coords_to_test.size() / 2):
+				if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] > 0:
+					if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] < smallest_tile_value:
+						if heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]] > 0:
+							smallest_tile_value = heat_map[width*coords_to_test[i*2+1]+coords_to_test[i*2]]
+							smallest_idx = i
+		
 		
 		#if minimum_space[0] == 100 or minimum_space[0] > enemy.move+1:
 		if smallest_tile_value > 100:
 			continue
+		if found_healer_coords:
+			if heat_map[width*healer_coords_to_test[smallest_idx*2+1]+healer_coords_to_test[smallest_idx*2]] > enemy.move:
+				var goal = enemy.move+1
+				var closest_x = 100
+				var closest_y = 100
+				var closest_d = 10000
+				var goal_x = healer_coords_to_test[smallest_idx*2]
+				var goal_y = healer_coords_to_test[smallest_idx*2+1]
+				
+				for y in range(height):
+					for x in range(width):
+						if heat_map[width*y+x] != goal:
+							continue
+						
+						var d = pow(goal_x - x, 2) + pow(goal_y - y, 2)
+						if d < closest_d:
+							closest_x = x
+							closest_y = y
+							closest_d = d
+				
+				if closest_d > 9999:
+					continue
+				
+				the_map[width*enemy.y+enemy.x].removeOccupant()
+				the_map[width*closest_y+closest_x].setOccupant(enemy)
+				
+				continue
+			
+			
 		if heat_map[width*coords_to_test[smallest_idx*2+1]+coords_to_test[smallest_idx*2]] > enemy.move:
 			var goal = enemy.move+1
 			var closest_x = 100
@@ -434,17 +602,17 @@ func playEnemyTurns(phase):
 			
 			continue
 		
-		for idxy in range(height):
-			var s = ""
-			for idxx in range(width):
-				var c = str(heat_map[width*idxy+idxx])
-				s = s + c + " "
-			print(s)
+		#for idxy in range(height):
+		#	var s = ""
+		#	for idxx in range(width):
+		#		var c = str(heat_map[width*idxy+idxx])
+		#		s = s + c + " "
+		#	print(s)
 		
 		#print(str(enemy.x) + ", " + str(enemy.y) + " - " + str(minimum_space[1]) + ", " + str(minimum_space[2]))
 		the_map[width*enemy.y+enemy.x].removeOccupant()
 		the_map[width*coords_to_test[smallest_idx*2+1]+coords_to_test[smallest_idx*2]].setOccupant(enemy)
-	
+		
 	phase = "attack"
 
 

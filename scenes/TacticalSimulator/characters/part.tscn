@@ -3,4 +3,5 @@
 [ext_resource type="Script" path="res://scripts/characters/part.gd" id="1_1d423"]
 
 [node name="Part" type="Sprite2D"]
+scale = Vector2(0.286, 0.286)
 script = ExtResource("1_1d423")

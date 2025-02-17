@@ -18,6 +18,8 @@ var spent = false
 var x
 var y
 
+var archetype = "dummy"
+
 func _ready():
 	pass
 
@@ -50,7 +52,7 @@ func getType():
 	return "enemy"
 
 func getArchetype():
-	return "wolf"
+	return archetype
 
 func getId():
 	return id

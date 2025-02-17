@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://t87u8o8a3tnm"]
+[gd_scene load_steps=4 format=3 uid="uid://t87u8o8a3tnm"]
 
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_5g70q"]
+[ext_resource type="Texture2D" uid="uid://c2ivvc1fgy4j" path="res://assets/ui/main_menu.png" id="2_rb7vs"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_yuycc"]
 font_size = 48
@@ -14,41 +15,59 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5g70q")
 
-[node name="Base" type="Control" parent="."]
-anchors_preset = 0
+[node name="Base" type="TextureRect" parent="."]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+texture = ExtResource("2_rb7vs")
 
 [node name="ToLevelSelect" type="Button" parent="Base"]
+visible = false
 layout_mode = 0
-offset_left = 543.0
-offset_top = 97.0
-offset_right = 1090.0
-offset_bottom = 471.0
+offset_left = 526.0
+offset_top = 463.0
+offset_right = 1073.0
+offset_bottom = 598.0
 
 [node name="Label" type="Label" parent="Base/ToLevelSelect"]
 layout_mode = 0
-offset_left = 116.0
-offset_top = 141.0
-offset_right = 438.0
-offset_bottom = 209.0
+offset_left = 110.0
+offset_top = 34.0
+offset_right = 432.0
+offset_bottom = 102.0
 text = "LEVEL SELECT"
 label_settings = SubResource("LabelSettings_yuycc")
 
 [node name="QUITGAME" type="Button" parent="Base"]
 layout_mode = 0
-offset_left = 634.0
-offset_top = 634.0
-offset_right = 976.0
-offset_bottom = 752.0
+offset_left = 683.0
+offset_top = 539.0
+offset_right = 923.0
+offset_bottom = 619.0
 
 [node name="Label" type="Label" parent="Base/QUITGAME"]
 layout_mode = 0
-offset_left = 93.0
-offset_top = 25.0
-offset_right = 257.0
-offset_bottom = 93.0
+offset_left = 59.0
+offset_top = 1.0
+offset_right = 176.0
+offset_bottom = 80.0
 text = "QUIT"
+label_settings = SubResource("LabelSettings_yuycc")
+
+[node name="ToHub" type="Button" parent="Base"]
+layout_mode = 0
+offset_left = 585.0
+offset_top = 405.0
+offset_right = 1010.0
+offset_bottom = 501.0
+
+[node name="Label" type="Label" parent="Base/ToHub"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 13.0
+offset_right = 357.0
+offset_bottom = 81.0
+text = "START GAME"
 label_settings = SubResource("LabelSettings_yuycc")
 
 [node name="LevelSelect" type="Control" parent="."]
@@ -138,6 +157,7 @@ text = "Back to Menu"
 label_settings = SubResource("LabelSettings_yuycc")
 
 [node name="Button" type="Button" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 76.0
 offset_top = 454.0
@@ -146,6 +166,8 @@ offset_bottom = 535.0
 text = "EDIT GUARD"
 
 [node name="Button2" type="Button" parent="."]
+visible = false
+layout_mode = 0
 offset_left = 80.0
 offset_top = 620.0
 offset_right = 265.0
@@ -153,6 +175,8 @@ offset_bottom = 701.0
 text = "EDIT HUMAN"
 
 [node name="Button3" type="Button" parent="."]
+visible = false
+layout_mode = 0
 offset_left = 72.0
 offset_top = 769.0
 offset_right = 257.0
@@ -161,6 +185,7 @@ text = "EDIT ANGEL"
 
 [connection signal="pressed" from="Base/ToLevelSelect" to="." method="_on_to_level_select_pressed"]
 [connection signal="pressed" from="Base/QUITGAME" to="." method="_on_quitgame_pressed"]
+[connection signal="pressed" from="Base/ToHub" to="." method="_on_to_hub_pressed"]
 [connection signal="pressed" from="LevelSelect/1" to="." method="_on_one_pressed"]
 [connection signal="pressed" from="LevelSelect/2" to="." method="_on_two_pressed"]
 [connection signal="pressed" from="LevelSelect/3" to="." method="_on_three_pressed"]

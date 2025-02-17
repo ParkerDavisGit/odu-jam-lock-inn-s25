@@ -1,15 +1,22 @@
-[gd_scene load_steps=11 format=3 uid="uid://bonh7o4qt67lr"]
+[gd_scene load_steps=15 format=3 uid="uid://bonh7o4qt67lr"]
 
 [ext_resource type="Script" path="res://scripts/ui/piece_selection_menu.gd" id="1_jmp8n"]
-[ext_resource type="Texture2D" uid="uid://cyc7fpqwi37le" path="res://assets/pieces/angel_chest_1.png" id="1_qxkdt"]
-[ext_resource type="Texture2D" uid="uid://bpp45gsfga0yy" path="res://assets/pieces/human_limbs_1.png" id="2_pe4p2"]
-[ext_resource type="Texture2D" uid="uid://cjsk4y8or85fu" path="res://assets/pieces/angel_head_1.png" id="2_w4xys"]
-[ext_resource type="Texture2D" uid="uid://6htfrsbmhomk" path="res://assets/pieces/guard_limbs_1.png" id="3_s4dcu"]
-[ext_resource type="Texture2D" uid="uid://boy05xkxegiw0" path="res://assets/pieces/angel_limbs_1.png" id="3_vkn6g"]
-[ext_resource type="Texture2D" uid="uid://dqrr64xwvd6sk" path="res://assets/pieces/human_chest_1.png" id="5_8qgyu"]
-[ext_resource type="Texture2D" uid="uid://2k0yhsyyftex" path="res://assets/pieces/guard_chest_1.png" id="6_xhe7a"]
-[ext_resource type="Texture2D" uid="uid://ulqh6uac8o3g" path="res://assets/pieces/human_head_1.png" id="8_2bl1f"]
-[ext_resource type="Texture2D" uid="uid://d1dwiuutqi2nv" path="res://assets/pieces/guard_head_1.png" id="9_tks3y"]
+[ext_resource type="Texture2D" uid="uid://c67jqc3dffb2n" path="res://assets/ui/part_select.png" id="2_3tirn"]
+[ext_resource type="Texture2D" uid="uid://dw67lgfa6pr4e" path="res://assets/pieces/old2/angel_head_1.png" id="2_o8adg"]
+[ext_resource type="Texture2D" uid="uid://bc8yfkx1y5pvp" path="res://assets/pieces/old2/angel_chest_1.png" id="3_2c4qx"]
+[ext_resource type="Texture2D" uid="uid://d063fkj0gxqrj" path="res://assets/pieces/old2/angel_limbs_1.png" id="4_jcc5j"]
+[ext_resource type="Texture2D" uid="uid://d2knjr7yikiym" path="res://assets/pieces/old2/human_limbs_1.png" id="5_4uutx"]
+[ext_resource type="Texture2D" uid="uid://baceg3y65q7ry" path="res://assets/pieces/old2/guard_limbs_1.png" id="6_booc0"]
+[ext_resource type="Texture2D" uid="uid://dfoxqubowq2gk" path="res://assets/pieces/old2/human_chest_1.png" id="7_fsxbp"]
+[ext_resource type="Texture2D" uid="uid://bqwsmwc675gh5" path="res://assets/pieces/old2/guard_chest_1.png" id="8_gwbkh"]
+[ext_resource type="Texture2D" uid="uid://dv4yo1xnenc5g" path="res://assets/pieces/old2/human_head_1.png" id="9_ntuqj"]
+[ext_resource type="Texture2D" uid="uid://d4gv5jeltx4yj" path="res://assets/pieces/old2/guard_head_1.png" id="10_ivic5"]
+[ext_resource type="Script" path="res://scenes/ui/piece_swap_info.gd" id="12_knapx"]
+[ext_resource type="Texture2D" uid="uid://bufluo62bx27" path="res://assets/ui/bg_sign_2.jpg" id="12_lt51e"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_pl4v7"]
+font_size = 48
+font_color = Color(0, 0, 0, 1)
 
 [node name="PieceSelectionMenu" type="Control"]
 layout_mode = 3
@@ -20,103 +27,181 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jmp8n")
 
+[node name="ColorRect" type="TextureRect" parent="."]
+layout_mode = 0
+texture = ExtResource("2_3tirn")
+
 [node name="HeadPreview" type="Sprite2D" parent="."]
 z_index = 1
-position = Vector2(407, 431)
-scale = Vector2(4, 4)
-texture = ExtResource("2_w4xys")
+position = Vector2(349, 427)
+texture = ExtResource("2_o8adg")
 
 [node name="ChestPreview" type="Sprite2D" parent="."]
-position = Vector2(407, 431)
-scale = Vector2(4, 4)
-texture = ExtResource("1_qxkdt")
+position = Vector2(349, 427)
+texture = ExtResource("3_2c4qx")
 
 [node name="LimbsPreview" type="Sprite2D" parent="."]
 z_index = 1
-position = Vector2(407, 431)
-scale = Vector2(4, 4)
-texture = ExtResource("3_vkn6g")
+position = Vector2(349, 427)
+texture = ExtResource("4_jcc5j")
 
 [node name="ah_one" type="TextureButton" parent="."]
 layout_mode = 0
-offset_left = 771.0
-offset_top = 179.0
-offset_right = 835.0
-offset_bottom = 243.0
-scale = Vector2(2, 2)
-texture_normal = ExtResource("2_w4xys")
+offset_left = 571.0
+offset_top = 191.0
+offset_right = 795.0
+offset_bottom = 415.0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("2_o8adg")
 
 [node name="hl_one" type="TextureButton" parent="."]
-offset_left = 1235.0
-offset_top = 566.0
-offset_right = 1299.0
-offset_bottom = 630.0
-scale = Vector2(2, 2)
-texture_normal = ExtResource("2_pe4p2")
+layout_mode = 0
+offset_left = 953.0
+offset_top = 480.0
+offset_right = 1177.0
+offset_bottom = 704.0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("5_4uutx")
 
 [node name="gl_one" type="TextureButton" parent="."]
-offset_left = 996.0
-offset_top = 555.0
-offset_right = 1060.0
-offset_bottom = 619.0
-scale = Vector2(2, 2)
-texture_normal = ExtResource("3_s4dcu")
+layout_mode = 0
+offset_left = 767.0
+offset_top = 475.0
+offset_right = 991.0
+offset_bottom = 699.0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("6_booc0")
 
 [node name="al_one" type="TextureButton" parent="."]
-offset_left = 787.0
-offset_top = 568.0
-offset_right = 851.0
-offset_bottom = 632.0
-scale = Vector2(2, 2)
-texture_normal = ExtResource("3_vkn6g")
+layout_mode = 0
+offset_left = 582.0
+offset_top = 490.0
+offset_right = 806.0
+offset_bottom = 714.0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("4_jcc5j")
 
 [node name="hc_one" type="TextureButton" parent="."]
-offset_left = 1213.0
-offset_top = 385.0
-offset_right = 1277.0
-offset_bottom = 449.0
-scale = Vector2(2, 2)
-texture_normal = ExtResource("5_8qgyu")
+layout_mode = 0
+offset_left = 956.0
+offset_top = 302.0
+offset_right = 1180.0
+offset_bottom = 526.0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("7_fsxbp")
 
 [node name="gc_one" type="TextureButton" parent="."]
-offset_left = 989.0
-offset_top = 364.0
-offset_right = 1053.0
-offset_bottom = 428.0
-scale = Vector2(2, 2)
-texture_normal = ExtResource("6_xhe7a")
+layout_mode = 0
+offset_left = 768.0
+offset_top = 309.0
+offset_right = 992.0
+offset_bottom = 533.0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("8_gwbkh")
 
 [node name="ac_one" type="TextureButton" parent="."]
-offset_left = 759.0
-offset_top = 368.0
-offset_right = 823.0
-offset_bottom = 432.0
-scale = Vector2(2, 2)
-texture_normal = ExtResource("1_qxkdt")
+layout_mode = 0
+offset_left = 562.0
+offset_top = 320.0
+offset_right = 786.0
+offset_bottom = 544.0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("3_2c4qx")
 
 [node name="hh_one" type="TextureButton" parent="."]
-offset_left = 1211.0
-offset_top = 183.0
-offset_right = 1275.0
-offset_bottom = 247.0
-scale = Vector2(2, 2)
-texture_normal = ExtResource("8_2bl1f")
+layout_mode = 0
+offset_left = 948.0
+offset_top = 179.0
+offset_right = 1172.0
+offset_bottom = 403.0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("9_ntuqj")
 
 [node name="gh_one" type="TextureButton" parent="."]
-offset_left = 1015.0
-offset_top = 184.0
-offset_right = 1079.0
-offset_bottom = 248.0
-scale = Vector2(2, 2)
-texture_normal = ExtResource("9_tks3y")
+layout_mode = 0
+offset_left = 780.0
+offset_top = 176.0
+offset_right = 1004.0
+offset_bottom = 400.0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("10_ivic5")
 
-[node name="save" type="Button" parent="."]
+[node name="Save and Exit" type="Button" parent="."]
 layout_mode = 0
 offset_left = 283.0
 offset_top = 743.0
 offset_right = 527.0
 offset_bottom = 838.0
-text = "Save"
+text = "Save and Exit"
+
+[node name="SwapToOne" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 266.0
+offset_right = 89.0
+offset_bottom = 330.0
+scale = Vector2(2, 2)
+
+[node name="SwapToTwo" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 405.0
+offset_right = 87.0
+offset_bottom = 469.0
+scale = Vector2(2, 2)
+
+[node name="SwapToThree" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 579.0
+offset_right = 87.0
+offset_bottom = 643.0
+scale = Vector2(2, 2)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 1215.0
+offset_top = 96.0
+offset_right = 1569.0
+offset_bottom = 470.0
+texture = ExtResource("12_lt51e")
+script = ExtResource("12_knapx")
+
+[node name="HP" type="Label" parent="TextureRect"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 32.0
+offset_right = 74.0
+offset_bottom = 66.0
+text = "HP: "
+label_settings = SubResource("LabelSettings_pl4v7")
+
+[node name="HEAL" type="Label" parent="TextureRect"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 111.0
+offset_right = 82.0
+offset_bottom = 178.0
+text = "Heal"
+label_settings = SubResource("LabelSettings_pl4v7")
+
+[node name="ATK" type="Label" parent="TextureRect"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 189.0
+offset_right = 180.0
+offset_bottom = 256.0
+text = "Attack:"
+label_settings = SubResource("LabelSettings_pl4v7")
+
+[node name="MV" type="Label" parent="TextureRect"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 263.0
+offset_right = 141.0
+offset_bottom = 330.0
+text = "Move: "
+label_settings = SubResource("LabelSettings_pl4v7")
 
 [connection signal="pressed" from="ah_one" to="." method="_on_ah_one_pressed"]
 [connection signal="pressed" from="hl_one" to="." method="_on_hl_one_pressed"]
@@ -127,4 +212,7 @@ text = "Save"
 [connection signal="pressed" from="ac_one" to="." method="_on_ac_one_pressed"]
 [connection signal="pressed" from="hh_one" to="." method="_on_hh_one_pressed"]
 [connection signal="pressed" from="gh_one" to="." method="_on_gh_one_pressed"]
-[connection signal="pressed" from="save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="Save and Exit" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="SwapToOne" to="." method="_on_swap_to_one_pressed"]
+[connection signal="pressed" from="SwapToTwo" to="." method="_on_swap_to_two_pressed"]
+[connection signal="pressed" from="SwapToThree" to="." method="_on_swap_to_three_pressed"]

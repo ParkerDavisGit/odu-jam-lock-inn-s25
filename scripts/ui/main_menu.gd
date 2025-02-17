@@ -2,7 +2,8 @@ extends Control
 
 func _ready():
 	SignalBus.on_back_to_main_menu.connect(_on_back_to_main_menu)
-	
+
+
 func _on_back_to_main_menu():
 	self.visible = true
 	get_child(0).visible = true
@@ -55,3 +56,9 @@ func _on_button_2_pressed() -> void:
 
 func _on_button_3_pressed() -> void:
 	SignalBus.on_start_editing.emit("angel")
+
+
+func _on_to_hub_pressed() -> void:
+	SignalBus.on_sound_play.emit("button")
+	SignalBus.on_load_hub.emit()
+	closeMainMenu()

@@ -26,6 +26,8 @@ signal on_quit()
 
 @warning_ignore("unused_signal")
 signal on_track_play(track_name)
+@warning_ignore("unused_signal")
+signal on_sound_play(sound_name)
 
 @warning_ignore("unused_signal")
 signal on_turn_change(type)
@@ -38,9 +40,19 @@ signal on_attack_phase()
 signal on_move_phase()
 
 @warning_ignore("unused_signal")
-signal on_start_editing(character)
+signal on_start_editing()
 @warning_ignore("unused_signal")
-signal on_part_change(species, part, tier)
+signal on_part_change(species, part, tier, changing_name)
 
 @warning_ignore("unused_signal")
 signal on_connect_character_controller(the_cc)
+
+@warning_ignore("unused_signal")
+signal on_load_hub()
+@warning_ignore("unused_signal")
+signal on_open_map()
+
+@warning_ignore("unused_signal")
+signal on_open_win_screen()
+@warning_ignore("unused_signal")
+signal on_open_lose_screen()

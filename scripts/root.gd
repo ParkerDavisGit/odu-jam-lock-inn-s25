@@ -11,7 +11,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("PAUSE"):
-		if get_child(0).level == null:
+		if get_child(0).in_game == false:
 			_on_quit()
 		if paused:
 			paused = false

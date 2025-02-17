@@ -18,14 +18,18 @@ var enemies
 
 var packaged_corpse
 
+var level_name
+
 ## INIT YAY
-func create(level_name, cc):
+func create(new_level_name, cc):
 	SignalBus.on_tile_clicked.connect(_on_tile_clicked)
 	SignalBus.on_tile_hover.connect(_on_tile_hover)
 	
 	#the_map = load("res://scenes/TacticalSimulator/array_map.tscn").instantiate()
-	the_map = ArrayMap.create(10, 10, level_name, cc)
+	the_map = ArrayMap.create(10, 10, new_level_name, cc)
 	add_child(the_map)
+	
+	the_map.position.y += 50
 	
 	uiController = get_child(0)
 	
@@ -37,6 +41,8 @@ func create(level_name, cc):
 	
 	charactersSpent = 0
 	charactersAlive = 3
+	
+	level_name = new_level_name
 	
 	SignalBus.on_track_play.emit(level_name)
 	SignalBus.on_turn_change.connect(_on_turn_change)
@@ -62,24 +68,42 @@ func attack(tile):
 		kill(tile)
 
 
-func kill(tile: MapTile):
+func kill(tile):
+	print("--------")
+	print(the_map.players)
+	print(the_map.enemies)
 	if tile.occupant.getType() == "player":
 		charactersAlive -= 1
+		for i in range(the_map.players.size()):
+			if the_map.players[i].getId() == tile.occupant.getId():
+				the_map.players.pop_at(i)
+				break
+		if charactersAlive <= 0:
+			enemyWin()
 	
 	elif tile.occupant.getType() == "enemy":
 		for i in range(the_map.enemies.size()):
 			if the_map.enemies[i].getId() == tile.occupant.getId():
 				the_map.enemies.pop_at(i)
 				break
-	
-	#var add_corpse = tile.occupant.getType() == "enemy"
-	
+		if the_map.enemies.size() <= 0:
+			playerWin()
+		
 	tile.removeOccupant()
-	
+	#var add_corpse = tile.occupant.getType() == "enemy"
 	#if add_corpse:
 	#	tile.setOccupant(packaged_corpse.instantiate())
 	
 	pass
+
+
+func playerWin():
+	Flags.clearLevel(level_name)
+	SignalBus.on_open_win_screen.emit()
+
+
+func enemyWin():
+	SignalBus.on_open_lose_screen.emit()
 
 
 ##### [ YIPPEE ] ######################
@@ -112,28 +136,26 @@ func _on_tile_clicked(tile):
 			return
 		if phase == "attack":
 			if tile.attack_highlight.visible:
+				SignalBus.on_sound_play.emit("attack")
 				attack(tile)
 			if tile.defend_highlight.visible:
 				tile.occupant.defend = true
+				SignalBus.on_sound_play.emit("defend")
 			if tile.heal_highlight.visible:
+				SignalBus.on_sound_play.emit("heal")
 				tile.occupant.healBy(selected.occupant.heal)
 			
-			print(selected)
+			
 			selected.occupant.spend()
 			selected = null
 			the_map.clearHighlights()
 			checkTurnCycle()
 			return
 		
-		#if tile.occupant == selected.occupant:
-			#pass
-			## THIS IS WHERE DESELECTING HAPPENS
-			### NOTICE ME
-			#### ALERT
-			##### ALERT
-			###### ALERT
-			####### KEYWORD HERE
-		return
+		if tile.occupant.getType() != "player":
+				return
+		if tile.occupant.char_name != selected.occupant.char_name:
+			return
 	
 	if not tile.highlight.visible:
 		return
@@ -148,7 +170,7 @@ func _on_tile_clicked(tile):
 	tile.highlight.visible = true
 	the_map.clearHighlights()
 	selected = null
-	uiController.toggleAbilitySelector()
+	#uiController.toggleAbilitySelector()
 	checkTurnCycle()
 	
 	return false

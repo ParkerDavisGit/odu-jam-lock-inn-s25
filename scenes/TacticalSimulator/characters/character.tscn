@@ -3,5 +3,7 @@
 [ext_resource type="Script" path="res://scripts/characters/character.gd" id="1_mqqfu"]
 
 [node name="Character" type="Sprite2D"]
-position = Vector2(32, 32)
+modulate = Color(0.697473, 0.681748, 0.651699, 1)
+position = Vector2(34, 38)
+scale = Vector2(0.95, 0.95)
 script = ExtResource("1_mqqfu")

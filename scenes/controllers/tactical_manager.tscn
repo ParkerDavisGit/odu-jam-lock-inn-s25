@@ -1,12 +1,28 @@
-[gd_scene load_steps=6 format=3 uid="uid://cmqqsnt4w4kmk"]
+[gd_scene load_steps=16 format=3 uid="uid://cmqqsnt4w4kmk"]
 
 [ext_resource type="Script" path="res://scripts/controllers/tactical_manager.gd" id="1_co23w"]
 [ext_resource type="Texture2D" uid="uid://cxruu6pf58vrb" path="res://assets/sign.png" id="2_1wa4f"]
 [ext_resource type="Script" path="res://scripts/controllers/tactical_ui_controller.gd" id="2_gqwrw"]
 [ext_resource type="Script" path="res://scripts/controllers/hover_information.gd" id="3_fkhkl"]
+[ext_resource type="Texture2D" uid="uid://br3eyw04v12bn" path="res://assets/ui/bg_sign_1.jpg" id="4_x2at2"]
+[ext_resource type="Script" path="res://scripts/controllers/hover_information_enemy.gd" id="5_elkpm"]
+[ext_resource type="Texture2D" uid="uid://6rg8taiimuei" path="res://assets/attack_highlight.png" id="6_sbt8p"]
+[ext_resource type="Texture2D" uid="uid://bnjitvdif40iv" path="res://assets/defend_highlight.png" id="7_uwgmr"]
+[ext_resource type="Texture2D" uid="uid://cypnjvl3pmqxv" path="res://assets/heal_highlight.png" id="8_mg22j"]
+[ext_resource type="Texture2D" uid="uid://dpscjfft51dc8" path="res://assets/ui/necormancer_head.png" id="10_m6770"]
+[ext_resource type="Texture2D" uid="uid://bawky23cy5pd8" path="res://assets/ui/necromancer_beak.png" id="11_5xpgp"]
+[ext_resource type="Texture2D" uid="uid://c67jqc3dffb2n" path="res://assets/ui/part_select.png" id="12_wi7sd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_16xtx"]
 font_size = 24
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_w7t8r"]
+font_size = 32
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_goe41"]
+font_size = 32
 font_color = Color(0, 0, 0, 1)
 
 [node name="TacticalManager" type="Node2D"]
@@ -29,9 +45,9 @@ script = ExtResource("3_fkhkl")
 layout_mode = 0
 offset_left = 1017.0
 offset_top = 112.0
-offset_right = 1440.0
-offset_bottom = 356.0
-texture = ExtResource("2_1wa4f")
+offset_right = 1417.0
+offset_bottom = 362.0
+texture = ExtResource("4_x2at2")
 
 [node name="HP" type="Label" parent="TacticalUiController/HoverInformation"]
 layout_mode = 0
@@ -118,6 +134,174 @@ offset_top = 794.0
 offset_right = 840.0
 offset_bottom = 854.0
 text = "Heal"
+
+[node name="HoverInformationEnemy" type="Control" parent="TacticalUiController"]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 350.0
+offset_right = 40.0
+offset_bottom = 390.0
+script = ExtResource("5_elkpm")
+
+[node name="TextureRect" type="TextureRect" parent="TacticalUiController/HoverInformationEnemy"]
+layout_mode = 0
+offset_left = 1017.0
+offset_top = 112.0
+offset_right = 1417.0
+offset_bottom = 362.0
+texture = ExtResource("4_x2at2")
+
+[node name="HP" type="Label" parent="TacticalUiController/HoverInformationEnemy"]
+layout_mode = 0
+offset_left = 1050.0
+offset_top = 165.0
+offset_right = 1120.0
+offset_bottom = 199.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="MP" type="Label" parent="TacticalUiController/HoverInformationEnemy"]
+layout_mode = 0
+offset_left = 1047.0
+offset_top = 235.0
+offset_right = 1131.0
+offset_bottom = 269.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="ATK" type="Label" parent="TacticalUiController/HoverInformationEnemy"]
+layout_mode = 0
+offset_left = 1046.0
+offset_top = 199.0
+offset_right = 1130.0
+offset_bottom = 233.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="DEF" type="Label" parent="TacticalUiController/HoverInformationEnemy"]
+layout_mode = 0
+offset_left = 1033.0
+offset_top = 268.0
+offset_right = 1117.0
+offset_bottom = 302.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="SPD" type="Label" parent="TacticalUiController/HoverInformationEnemy"]
+layout_mode = 0
+offset_left = 1039.0
+offset_top = 300.0
+offset_right = 1123.0
+offset_bottom = 334.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="MV" type="Label" parent="TacticalUiController/HoverInformationEnemy"]
+layout_mode = 0
+offset_left = 1049.0
+offset_top = 270.0
+offset_right = 1133.0
+offset_bottom = 304.0
+label_settings = SubResource("LabelSettings_16xtx")
+
+[node name="Sprite2D" type="Sprite2D" parent="TacticalUiController/HoverInformationEnemy"]
+position = Vector2(1326, 227)
+scale = Vector2(0.8, 0.8)
+
+[node name="Name" type="Label" parent="TacticalUiController/HoverInformationEnemy"]
+layout_mode = 0
+offset_left = 1031.0
+offset_top = 121.0
+offset_right = 1115.0
+offset_bottom = 155.0
+label_settings = SubResource("LabelSettings_w7t8r")
+
+[node name="ColorRect" type="ColorRect" parent="TacticalUiController"]
+layout_mode = 0
+offset_left = 73.0
+offset_top = 263.0
+offset_right = 192.0
+offset_bottom = 599.0
+color = Color(0.683549, 0.689581, 0.680589, 1)
+
+[node name="TextureRect" type="TextureRect" parent="TacticalUiController/ColorRect"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 74.0
+offset_bottom = 74.0
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("6_sbt8p")
+
+[node name="Label" type="Label" parent="TacticalUiController/ColorRect/TextureRect"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 19.0
+offset_right = 57.0
+offset_bottom = 42.0
+scale = Vector2(0.5, 0.5)
+text = "Attack"
+label_settings = SubResource("LabelSettings_goe41")
+
+[node name="TextureRect2" type="TextureRect" parent="TacticalUiController/ColorRect"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 119.0
+offset_right = 75.0
+offset_bottom = 183.0
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("7_uwgmr")
+
+[node name="Label" type="Label" parent="TacticalUiController/ColorRect/TextureRect2"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 20.0
+offset_right = 61.0
+offset_bottom = 43.0
+scale = Vector2(0.5, 0.5)
+text = "Defend"
+label_settings = SubResource("LabelSettings_goe41")
+
+[node name="TextureRect3" type="TextureRect" parent="TacticalUiController/ColorRect"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 229.0
+offset_right = 75.0
+offset_bottom = 293.0
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("8_mg22j")
+
+[node name="Label" type="Label" parent="TacticalUiController/ColorRect/TextureRect3"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 20.0
+offset_right = 64.0
+offset_bottom = 43.0
+scale = Vector2(0.5, 0.5)
+text = "Heal"
+label_settings = SubResource("LabelSettings_goe41")
+
+[node name="TextureRect" type="TextureRect" parent="TacticalUiController"]
+z_index = -1
+layout_mode = 0
+offset_left = 199.0
+offset_top = -35.0
+offset_right = 619.0
+offset_bottom = 385.0
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("10_m6770")
+
+[node name="TextureRect2" type="TextureRect" parent="TacticalUiController"]
+z_index = 2
+layout_mode = 0
+offset_left = 199.0
+offset_top = -35.0
+offset_right = 619.0
+offset_bottom = 385.0
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("11_5xpgp")
+
+[node name="TextureRect3" type="TextureRect" parent="TacticalUiController"]
+z_index = -3
+offset_right = 2670.0
+offset_bottom = 1512.0
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("12_wi7sd")
 
 [connection signal="pressed" from="TacticalUiController/AbilitySelector/AbilityOne" to="." method="_on_ability_one_pressed"]
 [connection signal="pressed" from="TacticalUiController/AbilitySelector/AbilityOne2" to="." method="_on_ability_one_2_pressed"]

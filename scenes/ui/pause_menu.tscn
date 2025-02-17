@@ -28,6 +28,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="ToLevelSelect" type="Button" parent="Base"]
+visible = false
 layout_mode = 0
 offset_left = 543.0
 offset_top = 97.0

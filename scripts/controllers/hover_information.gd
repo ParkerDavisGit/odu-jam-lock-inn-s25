@@ -6,6 +6,8 @@ var label_atk
 var label_def
 var label_spd
 var label_mv
+var label_name
+var sprite
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -21,13 +23,10 @@ func loadInfo(occupant):
 		return
 	
 	var info = occupant.hoverInformation()
-	
 	label_hp.text = "HP: " + info["cur_hp"] + "/" + info["max_hp"]
-	label_mp.text = "MP: " + info["cur_mp"] + "/" + info["max_mp"]
+	label_mp.text = "Heal: " + info["heal"]
 	label_atk.text = "Attack: " + info["attack"]
-	label_def.text = "Defense: " + info["defense"]
-	label_spd.text = "Speed: " + info["speed"]
-	label_mv.text = "Move: " + info["move_left"] + "/" + info["move"]
+	label_mv.text = "Move: " + info["move"]
 
 func clear():
 	label_hp.text = ""

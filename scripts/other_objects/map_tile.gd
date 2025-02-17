@@ -126,6 +126,8 @@ func _on_tile_button_pressed() -> void:
 
 ##### [ STUFF ] #######################
 func getType() -> String:
+	if occupant == null:
+		return "null"
 	return occupant.getType()
 
 func toString() -> String:

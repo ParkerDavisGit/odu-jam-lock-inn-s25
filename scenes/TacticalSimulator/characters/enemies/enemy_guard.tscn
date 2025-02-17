@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://i2iqpex3dh42"]
+
+[ext_resource type="Texture2D" uid="uid://coalu1onntcqa" path="res://assets/enemies/Guardian_Hunter_Left_Idle.png" id="1_w4c86"]
+[ext_resource type="Script" path="res://scenes/TacticalSimulator/characters/enemies/enemy_guard.gd" id="2_2gjyi"]
+
+[node name="MyDumyOccupant" type="Sprite2D"]
+position = Vector2(29, 32)
+scale = Vector2(0.286, 0.286)
+texture = ExtResource("1_w4c86")
+script = ExtResource("2_2gjyi")

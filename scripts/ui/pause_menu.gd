@@ -20,7 +20,7 @@ func closeMainMenu():
 
 func _on_pause_level_select_pressed() -> void:
 	get_child(1).visible = false
-	get_child(2).visible = true
+	get_child(2).visible = false
 
 
 func _on_quitgame_pressed() -> void:

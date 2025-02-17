@@ -52,7 +52,7 @@ func getType():
 	return "player"
 
 func isHealer():
-	false
+	return false
 
 func healBy(amount):
 	cur_hp += amount
