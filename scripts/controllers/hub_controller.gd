@@ -29,6 +29,7 @@ func _ready() -> void:
 	text_box = camera.get_child(0)
 	loadHubData()
 	
+	Flags.intro_monologue = true
 	if !Flags.intro_monologue:
 		loadDialogue("intro_monologue", "???")
 	Flags.intro_monologue = true

@@ -3,9 +3,11 @@ extends Node2D
 class_name ArrayMap
 
 const array_map = preload("res://scenes/TacticalSimulator/array_map.tscn")
+const tile_grid = preload("res://scenes/TacticalSimulator/tile_grid.tscn")
 const MAPTILE = preload("res://scenes/TacticalSimulator/tile.tscn")
 
 var the_map
+var the_grid
 var width: int
 var height: int
 
@@ -19,6 +21,8 @@ static func create(new_width: int, new_height: int, level_name: String, cc):
 	var map_data = readMapData(level_name)
 	var char_data = readCharData(level_name)
 	
+	new_map.the_grid = tile_grid.instantiate().create(new_width, new_height, level_name, cc)
+	
 	new_map.width = new_width
 	new_map.height = new_height
 	
@@ -30,6 +34,8 @@ static func create(new_width: int, new_height: int, level_name: String, cc):
 	
 	new_map.resetMap(map_data)
 	populateMap(new_map, char_data, cc)
+	
+	new_map.the_grid.dbg()
 	
 	return new_map
 
@@ -113,6 +119,7 @@ func resetMap(data):
 			temp_tile.name = "(%s, %s)" % [str(x), str(y)]
 			add_child(temp_tile)
 			the_map.append(temp_tile)
+			the_grid.set_at(x, y, temp_tile)
 
 func clearHighlights():
 	for tile in the_map:
@@ -569,8 +576,8 @@ func playEnemyTurns(phase):
 				if closest_d > 9999:
 					continue
 				
-				the_map[width*enemy.y+enemy.x].removeOccupant()
-				the_map[width*closest_y+closest_x].setOccupant(enemy)
+				the_grid.tile_get(enemy.x, enemy.y).removeOccupant()
+				the_grid.tile_get(closest_x, closest_y).setOccupant(enemy)
 				
 				continue
 			
@@ -597,21 +604,13 @@ func playEnemyTurns(phase):
 			if closest_d > 9999:
 				continue
 			
-			the_map[width*enemy.y+enemy.x].removeOccupant()
-			the_map[width*closest_y+closest_x].setOccupant(enemy)
+			the_grid.tile_get(enemy.x, enemy.y).removeOccupant()
+			the_grid.tile_get(closest_x, closest_y).setOccupant(enemy)
 			
 			continue
-		
-		#for idxy in range(height):
-		#	var s = ""
-		#	for idxx in range(width):
-		#		var c = str(heat_map[width*idxy+idxx])
-		#		s = s + c + " "
-		#	print(s)
-		
-		#print(str(enemy.x) + ", " + str(enemy.y) + " - " + str(minimum_space[1]) + ", " + str(minimum_space[2]))
-		the_map[width*enemy.y+enemy.x].removeOccupant()
-		the_map[width*coords_to_test[smallest_idx*2+1]+coords_to_test[smallest_idx*2]].setOccupant(enemy)
+
+		the_grid.tile_get(enemy.x, enemy.y).removeOccupant()
+		the_grid.tile_get(coords_to_test[smallest_idx*2], coords_to_test[smallest_idx*2+1]).setOccupant(enemy)
 		
 	phase = "attack"
 
