@@ -52,6 +52,9 @@ func hoverInformation():
 func getType():
 	return "enemy"
 
+func get_type():
+	return "enemy"
+
 func getArchetype():
 	return archetype
 

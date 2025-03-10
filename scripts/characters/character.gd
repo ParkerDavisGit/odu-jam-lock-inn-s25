@@ -98,6 +98,9 @@ func hoverInformation():
 func getType():
 	return "player"
 
+func get_type():
+	return "player"
+
 func isHealer():
 	return heal > 1
 

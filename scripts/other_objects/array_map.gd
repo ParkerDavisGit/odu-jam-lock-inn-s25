@@ -19,7 +19,7 @@ var character_controller
 static func create(new_width: int, new_height: int, level_name: String, cc):
 	var new_map = array_map.instantiate()
 	var map_data = readMapData(level_name)
-	var char_data = readCharData(level_name)
+	var char_data = readCharData(level_name) 
 	
 	new_map.the_grid = tile_grid.instantiate().create(new_width, new_height, level_name, cc)
 	
@@ -170,7 +170,7 @@ func tilemapToHeatmap(x: int, y: int, distance: int):
 	
 	for idy in range(height):
 		for idx in range(width):
-			if the_map[width*idy+idx].occupied():
+			if self.the_grid.is_occupied(idx, idy):
 				heat_map[width*idy+idx] = -1
 				continue
 			if the_map[width*idy+idx].unmoveable:
@@ -214,49 +214,40 @@ func heatMapUpdate(heat_map, idx, idy, d):
 
 
 func highlightAttackTiles(selected):
-	var idx = width * selected.y + selected.x
-	var given_x = selected.x
-	var given_y = selected.y
+	var occupant_type: String = ""
 	
-	var idx_up = idx - width
-	var idx_left = idx - 1
-	var idx_right = idx + 1
-	var idx_down = idx + width
+	### GET RIGHT
+	occupant_type = self.the_grid.get_occupant_type(selected.x + 1, selected.y)
+	if occupant_type == "enemy":
+		self.the_grid.add_highlight(selected.x + 1, selected.y, "attack")
+	elif occupant_type == "player":
+		self.the_grid.add_highlight(selected.x + 1, selected.y, "heal")
 	
-	### This is some of the worst code I have written in a while ;-;
-	if given_x < width - 1:
-		if the_map[idx_right].occupied():
-			if the_map[idx_right].occupant.getType() == "enemy":
-				the_map[idx_right].addAttackHighlight()
-			elif the_map[idx_right].occupant.getType() == "player":
-				the_map[idx_right].addHealHighlight()
-	if given_x > 0:
-		if the_map[idx_left].occupied():
-			if the_map[idx_left].occupant.getType() == "enemy":
-				the_map[idx_left].addAttackHighlight()
-			elif the_map[idx_left].occupant.getType() == "player":
-				the_map[idx_left].addHealHighlight()
-	if given_y < height - 1:
-		if the_map[idx_down].occupied():
-			if the_map[idx_down].occupant.getType() == "enemy":
-				the_map[idx_down].addAttackHighlight()
-			elif the_map[idx_down].occupant.getType() == "player":
-				the_map[idx_down].addHealHighlight()
-	if given_y > 0:
-		if the_map[idx_up].occupied():
-			if the_map[idx_up].occupant.getType() == "enemy":
-				the_map[idx_up].addAttackHighlight()
-			elif the_map[idx_up].occupant.getType() == "player":
-				the_map[idx_up].addHealHighlight()
+	### GET LEFT
+	occupant_type = self.the_grid.get_occupant_type(selected.x - 1, selected.y)
+	if occupant_type == "enemy":
+		self.the_grid.add_highlight(selected.x - 1, selected.y, "attack")
+	elif occupant_type == "player":
+		self.the_grid.add_highlight(selected.x - 1, selected.y, "heal")
 	
-	the_map[idx].addDefendHighlight()
+	### GET DOWN
+	occupant_type = self.the_grid.get_occupant_type(selected.x, selected.y + 1)
+	if occupant_type == "enemy":
+		self.the_grid.add_highlight(selected.x, selected.y + 1, "attack")
+	elif occupant_type == "player":
+		self.the_grid.add_highlight(selected.x, selected.y + 1, "heal")
+	
+	### GET UP
+	occupant_type = self.the_grid.get_occupant_type(selected.x, selected.y - 1)
+	if occupant_type == "enemy":
+		self.the_grid.add_highlight(selected.x, selected.y - 1, "attack")
+	elif occupant_type == "player":
+		self.the_grid.add_highlight(selected.x, selected.y - 1, "heal")
+	
+	self.the_grid.add_highlight(selected.x, selected.y, "defend")
 
 func refreshPlayerCharacters():
-	for tile in the_map:
-		if not tile.occupied():
-			continue
-		if tile.occupant.getType() == "player":
-			tile.occupant.unspend()
+	the_grid.refresh_player_characters()
 
 
 func enemyHeatmap(start_x, start_y, enemy):
@@ -267,11 +258,11 @@ func enemyHeatmap(start_x, start_y, enemy):
 	
 	for idy in range(height):
 		for idx in range(width):
-			if the_map[width*idy+idx].occupied():
-				if the_map[width*idy+idx].occupant.getId() != enemy.getId():
+			if the_grid.is_occupied(idx, idy):
+				if the_grid.get_occupant(idx, idy).getId() != enemy.getId():
 					heat_map[width*idy+idx] = -2
 					continue
-			if the_map[width*idy+idx].unmoveable:
+			if the_grid.get_tile(idx, idy).unmoveable:
 				heat_map[width*idy+idx] = -1
 
 	var val = 0
@@ -317,27 +308,17 @@ func enemyAttack(enemy):
 	var y = enemy.y
 	
 	var potential_targets = []
-	if enemy.x > 0:
-		if the_map[width*y+(x-1)].occupied():
-			if the_map[width*y+(x-1)].getType() == "player":
-				if the_map[width*y+(x-1)].occupant.cur_hp > 0:
-					potential_targets.append(the_map[width*y+(x-1)].occupant)
+	if the_grid.get_occupant_type(x-1, y) == "player":
+		potential_targets.append(the_grid.get_occupant(x-1, y))
 	
-	if enemy.x < width-1:
-		if the_map[width*y+(x+1)].occupied():
-			if the_map[width*y+(x+1)].getType() == "player":
-				if the_map[width*y+(x+1)].occupant.cur_hp > 0:
-					potential_targets.append(the_map[width*y+(x+1)].occupant)
-	if enemy.y > 0:
-		if the_map[width*(y-1)+x].occupied():
-			if the_map[width*(y-1)+x].getType() == "player":
-				if the_map[width*(y-1)+x].occupant.cur_hp > 0:
-					potential_targets.append(the_map[width*(y-1)+x].occupant)
-	if enemy.y < height-1:
-		if the_map[width*(y+1)+x].occupied():
-			if the_map[width*(y+1)+x].getType() == "player":
-				if the_map[width*(y+1)+x].occupant.cur_hp > 0:
-					potential_targets.append(the_map[width*(y+1)+x].occupant)
+	if the_grid.get_occupant_type(x+1, y) == "player":
+		potential_targets.append(the_grid.get_occupant(x+1, y))
+	
+	if the_grid.get_occupant_type(x, y-1) == "player":
+		potential_targets.append(the_grid.get_occupant(x, y-1))
+	
+	if the_grid.get_occupant_type(x, y+1) == "player":
+		potential_targets.append(the_grid.get_occupant(x, y+1))
 	
 	var best_target = null
 	
@@ -370,7 +351,8 @@ func enemyAttack(enemy):
 		
 		best_target.healBy(enemy.heal)
 		SignalBus.on_sound_play.emit("heal")
-		the_map[width*best_target.y+best_target.x].heal_highlight.visible = true
+		
+		the_grid.get_tile(best_target.x, best_target.y).heal_highlight.visible = true
 		
 		await get_tree().create_timer(.5).timeout
 		return
@@ -442,15 +424,11 @@ func playEnemyTurns(phase):
 			await get_tree().create_timer(1).timeout
 			clearHighlights()
 			continue
+		
 		await get_tree().create_timer(.5).timeout
 		
 		var heat_map = enemyHeatmap(enemy.x, enemy.y, enemy)
-		#for idxy in range(height):
-		#	var s = ""
-		#	for idxx in range(width):
-		#		var c = str(heat_map[width*idxy+idxx])
-		#		s = s + c + " "
-		#	print(s)
+		
 		if enemy.getArchetype() == "angel":
 			for idxy in range(height):
 				var s = ""
@@ -576,8 +554,8 @@ func playEnemyTurns(phase):
 				if closest_d > 9999:
 					continue
 				
-				the_grid.tile_get(enemy.x, enemy.y).removeOccupant()
-				the_grid.tile_get(closest_x, closest_y).setOccupant(enemy)
+				the_grid.get_tile(enemy.x, enemy.y).removeOccupant()
+				the_grid.get_tile(closest_x, closest_y).setOccupant(enemy)
 				
 				continue
 			
@@ -604,13 +582,13 @@ func playEnemyTurns(phase):
 			if closest_d > 9999:
 				continue
 			
-			the_grid.tile_get(enemy.x, enemy.y).removeOccupant()
-			the_grid.tile_get(closest_x, closest_y).setOccupant(enemy)
+			the_grid.get_tile(enemy.x, enemy.y).removeOccupant()
+			the_grid.get_tile(closest_x, closest_y).setOccupant(enemy)
 			
 			continue
 
-		the_grid.tile_get(enemy.x, enemy.y).removeOccupant()
-		the_grid.tile_get(coords_to_test[smallest_idx*2], coords_to_test[smallest_idx*2+1]).setOccupant(enemy)
+		the_grid.get_tile(enemy.x, enemy.y).removeOccupant()
+		the_grid.get_tile(coords_to_test[smallest_idx*2], coords_to_test[smallest_idx*2+1]).setOccupant(enemy)
 		
 	phase = "attack"
 
