@@ -67,6 +67,13 @@ func add_highlight(x: int, y: int, type: String):
 		"defend":
 			tile.addDefendHighlight()
 
+func clear_highlights():
+	for row in the_grid:
+		for tile in row:
+			tile.highlight.visible = false
+			tile.removeHighlights()
+			tile.lock_highlight = false
+
 func refresh_player_characters():
 	for row in the_grid:
 		for tile in row:

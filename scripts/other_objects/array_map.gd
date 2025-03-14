@@ -122,10 +122,7 @@ func resetMap(data):
 			the_grid.set_at(x, y, temp_tile)
 
 func clearHighlights():
-	for tile in the_map:
-		tile.highlight.visible = false
-		tile.removeHighlights()
-		tile.lock_highlight = false
+	the_grid.clear_highlights()
 
 ###
 # Print the contents of the map into the godot console
@@ -422,7 +419,7 @@ func playEnemyTurns(phase):
 		if phase == "attack":
 			enemyAttack(enemy)
 			await get_tree().create_timer(1).timeout
-			clearHighlights()
+			the_grid.clear_highlights()
 			continue
 		
 		await get_tree().create_timer(.5).timeout
